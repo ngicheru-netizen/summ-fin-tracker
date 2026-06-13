@@ -6,6 +6,7 @@
     <title>Budgets</title>
   </head>
   <body>
+    <header><h1>Budget Summary</h1></header>
     <nav>
       <ol aria-label="Main navigation">
         <li><a href="index.html">Home</a></li>
@@ -16,5 +17,59 @@
         <li><a href="settings.html">Settings</a></li>
       </ol>
     </nav>
+    <main>
+      <section id="budget-status">
+        <h2>Overall Budget Status</h2>
+        <div class="card">
+          <p>Monthly Budget Cap: <span id="budget-cap">$0.00</span></p>
+          <p>Spent This Month: <span id="spent-this-month">$0.00</span></p>
+          <p>Amount Remaining: <span id="amount-remaining">$0.00</span></p>
+        </div>
+      </section>
+      <section id="bgt-progress-bar">
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill"></div>
+          <!--CSS to handle this-->
+          <p>67% Spent</p>
+          <!-- CSS positions the fill width based on JS calculation -->
+        </div>
+
+        <a href="settings.html">Edit Budget Cap</a>
+      </section>
+      <section id="category-breakdown">
+        <h2>Spending by Category</h2>
+        <table id="category-breakdown-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Amount Spent</th>
+              <th>% of Total Budget</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS will populate this -->
+          </tbody>
+        </table>
+      </section>
+      <section id="monnthly-breakdown">
+        <h2>Spending by Month</h2>
+        <table id="monthly-breakdown-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Amount Spent</th>
+              <th>Trend Indicator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS will populate this -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <footer>
+      <p>Created by Nadiv Gicheru 😜</p>
+      <p>&copy; 2026</p>
+    </footer>
   </body>
 </html>

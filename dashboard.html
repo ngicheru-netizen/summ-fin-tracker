@@ -21,13 +21,50 @@
       </ol>
     </nav>
     <main>
-      <section id="primary-dash">
+      <section id="budget-overview">
         <!--This will hold the first chart on 
         how much was spent-->
+        <h2>Budget Overview</h2>
+        <div class="card" role="status" aria-live="polite">
+          <!--Budget info etc.. \-->
+
+          <p>Monthly Budget Cap: <span id="budget-cap">$0.00</span></p>
+          <p>Spent This Month: <span id="spent-this-month">$0.00</span></p>
+          <p>Amount Remaining: <span id="amount-remaining">$0.00</span></p>
+        </div>
       </section>
-      <section id="totalspent-dash">
+
+      <section id="spending-trend">
+        <h2>Spending Trends by Category</h2>
+        <!--Shows spending trend of the last 12 months (tbd) on a pie chart-->
+        <!--Will also hold container for SVG-->
+
+        <svg id="cat-pie-chart">
+          <!--Shows spending based on category-->
+          <!--Will use JS for this part-->
+        </svg>
+      </section>
+      <section id="spending-trend-monthly">
+        <h2>Spending Trends (Last 12 Months)</h2>
+        <!--Shows spending trend of the last 12 months (tbd) on a pie chart-->
+        <!--Will also hold container for SVG-->
+
+        <svg id="monthly-pie-chart">
+          <!--Shows spending based on category-->
+          <!--Will use JS for this part-->
+        </svg>
+      </section>
+      <section id="currency-display">
         <!--This will hold the second chart
-         on how much was spent in total, and in different currencies-->
+         on how much was spent in total, and in USD, KES and RwF-->
+        <h2>View Your Spending</h2>
+        <div class="card">
+          <p>Total Spent: <span id="total-usd">$0.00</span></p>
+          <p>Equivalent in KES: <span id="total-kes">KES 0.00</span></p>
+          <p>Equivalent in RwF: <span id="total-rwf">RwF 0.00</span></p>
+        </div>
+
+        <!-- get conversion rates from settings (localStorage)-->
       </section>
     </main>
 

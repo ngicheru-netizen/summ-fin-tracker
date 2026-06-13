@@ -11,7 +11,7 @@
     </header>
     <nav>
       <ol aria-label="Main navigation">
-        <li><a href="index.html">home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="transactions.html">Transactions</a></li>
         <li><a href="budgets.html">Budgets</a></li>
@@ -41,10 +41,19 @@
               <th>Date</th>
               <th>Created</th>
               <th>Last Edited</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <!-- This will be populated by the transaction history data -->
+            <!-- Delete Later... Each row will have: -->
+            <!-- <tr data-id="txn_001"> -->
+            <!--   <td>...</td> (for each column) -->
+            <!--   <td> -->
+            <!--     <button class="trans-edit-btn">Edit</button> -->
+            <!--     <button class="trans-del-btn">Delete</button> -->
+            <!--   </td> -->
+            <!-- </tr> -->
           </tbody>
         </table>
       </section>
@@ -54,30 +63,30 @@
       <section id="trans-details" hidden>
         <h2>Transaction ID</h2>
       </section>
-
       <!--'Add Transaction' Form... JS will load form once button is clicked.-->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!-------------------------Transaction Form------------------------------->
       <section id="trans-form" hidden>
         <!--'Add Transaction' Form... JS will load form once button is clicked.-->
 
         <form id="transactionform">
           <fieldset>
+            <legend>Add/Edit Transaction</legend>
             <input type="hidden" id="trans-id" name="trans-id" />
             <label for="trans-summary">Summary</label>
-            <input
-              type="text"
-              id="trans-summary"
-              name="trans-summary"
-              required
-            />
+            <input id="trans-summary" name="trans-summary" required />
 
             <label for="trans-cost">Cost</label>
             <input type="number" id="trans-cost" name="trans-cost" required />
 
             <label for="trans-location-city">Location</label>
             <select
-              type="text"
-              id="trans-location"
-              name="trans-location"
+              id="trans-location-city"
+              name="trans-location-city"
               required
             >
               <option value="">Please choose a city</option>

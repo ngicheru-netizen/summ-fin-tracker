@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings</title>
+  </head>
+  <body>
+    <header>
+      <h1>Settings</h1>
+    </header>
+    <nav>
+      <ol aria-label="Main navigation">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="transactions.html">Transactions</a></li>
+        <li><a href="budgets.html">Budgets</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ol>
+    </nav>
+    <main>
+      <section id="currency-settings">
+        <h2>Settings</h2>
+        <form id="set-currency">
+          <fieldset>
+            <legend>Select your currency</legend>
+            <input
+              type="radio"
+              id="usd"
+              name="base-currency"
+              value="United States Dollar ($)"
+            />
+            <label for="usd">United States Dollar ($)</label><br />
+            <input
+              type="radio"
+              id="kes"
+              name="base-currency"
+              value="Kenyan Shilling (KES)"
+            />
+            <label for="kes">Kenyan Shilling (KES)</label><br />
+            <input
+              type="radio"
+              id="rwf"
+              name="base-currency"
+              value="Rwandan Francs"
+            />
+            <label for="rwf">Rwandan Francs (RwF)</label><br />
+            <br />
+          </fieldset>
+          <fieldset>
+            <legend>Set your currency conversion rates</legend>
+            <label for="rate-kes">1 USD = ___ KES</label>
+            <input
+              type="number"
+              name="rate-kes"
+              id="rate-kes"
+              placeholder="e.g, 129.27"
+              step="0.01"
+            />
+            <br />
+            <label for="rate-rwf">1 USD = ___ RwF</label>
+            <input
+              type="number"
+              name="rate-rwf"
+              id="rate-rwf"
+              placeholder="e.g 1464.92"
+              step="0.01"
+            />
+          </fieldset>
+
+          <fieldset>
+            <legend>Monthly Budget Cap</legend>
+            <label for="budget-cap">Budget Cap Amount</label>
+            <input
+              type="number"
+              id="budget-cap"
+              name="budget-cap"
+              placeholder="e.g 800"
+              step="0.01"
+              min="0"
+            />
+            <p>
+              <small>Set the cap in your selected base currency (above)</small>
+            </p>
+          </fieldset>
+          <button id="change-currency">Save Changes</button>
+          <button id="cancel-change-currency">Cancel</button>
+          <!--With Confirmation-->
+        </form>
+      </section>
+
+      <section id="manage-categories">
+        <h2>Manage Categories</h2>
+        <!--This section will allow users to add, edit and delete categories-->
+
+        <ul class="category-list">
+          <li>
+            <span>Food</span>
+            <button class="edit-category-button">Edit</button>
+            <button class="delete-category-button">Delete</button>
+          </li>
+          <li>
+            <span>Books</span>
+            <button class="edit-category-button">Edit</button>
+            <button class="delete-category-button">Delete</button>
+          </li>
+          <li>
+            <span>Transport</span>
+            <button class="edit-category-button">Edit</button>
+            <button class="delete-category-button">Delete</button>
+          </li>
+          <li>
+            <span>Entertainment</span>
+            <button class="edit-category-button">Edit</button>
+            <button class="delete-category-button">Delete</button>
+          </li>
+          <li>
+            <span>Health</span>
+            <button class="edit-category-button">Edit</button>
+            <button class="delete-category-button">Delete</button>
+          </li>
+        </ul>
+        <button id="add-category-btn">Add Category</button>
+        <section id="category-form" hidden>
+          <form id="cat-form">
+            <fieldset>
+              <legend>Add New Category</legend>
+              <input type="hidden" id="cat-id" />
+              <label for="cat-name">Category Name</label>
+              <input type="text" id="cat-name" required />
+              <button id="cat-cancel" type="button">Cancel</button>
+              <button id="save-category">Save Category</button>
+            </fieldset>
+          </form>
+        </section>
+        <button id="save-all-categories">Save Changes</button>
+      </section>
+    </main>
+    <footer>
+      <p>Created by Nadiv Gicheru 😜</p>
+      <p>&copy; 2026</p>
+    </footer>
+  </body>
+</html>

@@ -16,7 +16,7 @@
     <!-- Collapsible Navigation Banner Section -->
     <nav>
       <ol aria-label="Main navigation">
-        <li>Home</li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="transactions.html">Transactions</a></li>
         <li><a href="budgets.html">Budgets</a></li>
@@ -32,7 +32,7 @@
 
         <h2>Recent Transactions</h2>
         <div class="trans-cards">
-          <article class="card">
+          <article class="card" data-id="">
             <h3>Coffee</h3>
             <dl>
               <dt>Cost</dt>
@@ -73,9 +73,8 @@
 
             <label for="trans-location-city">Location</label>
             <select
-              type="text"
-              id="trans-location"
-              name="trans-location"
+              id="trans-location-city"
+              name="trans-location-city"
               required
             >
               <option value="">Please choose a city</option>
