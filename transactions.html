@@ -3,10 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Budgets</title>
+    <title>Transactions</title>
   </head>
   <body>
-    <h1>Your Transactions</h1>
-    <main></main>
+    <header>
+      <h1>Your Transactions</h1>
+    </header>
+    <nav>
+      <ol aria-label="Main navigation">
+        <li><a href="index.html">home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="transactions.html">Transactions</a></li>
+        <li><a href="budgets.html">Budgets</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="settings.html">Settings</a></li>
+      </ol>
+    </nav>
+    <main>
+      <section>
+        <!--Search Filter Form for transactions-->
+        <form id="search-form">
+          <input
+            type="text"
+            id="trans-search"
+            placeholder="Search for transactions"
+          />
+        </form>
+
+        <h2>Transaction History</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Created</th>
+              <th>Last Edited</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- This will be populated by the transaction history data -->
+          </tbody>
+        </table>
+      </section>
+
+      <!--Transaction Details Panel-->
+
+      <section id="trans-details" hidden>
+        <h2>Transaction ID</h2>
+      </section>
+
+      <!--'Add Transaction' Form... JS will load form once button is clicked.-->
+      <section id="trans-form" hidden>
+        <!--'Add Transaction' Form... JS will load form once button is clicked.-->
+
+        <form id="transactionform">
+          <fieldset>
+            <input type="hidden" id="trans-id" name="trans-id" />
+            <label for="trans-summary">Summary</label>
+            <input
+              type="text"
+              id="trans-summary"
+              name="trans-summary"
+              required
+            />
+
+            <label for="trans-cost">Cost</label>
+            <input type="number" id="trans-cost" name="trans-cost" required />
+
+            <label for="trans-location-city">Location</label>
+            <select
+              type="text"
+              id="trans-location"
+              name="trans-location"
+              required
+            >
+              <option value="">Please choose a city</option>
+              <option value="Nairobi">Nairobi</option>
+              <option value="Kigali">Kigali</option>
+            </select>
+
+            <label for="trans-date">Date & Time</label>
+            <input
+              type="datetime-local"
+              id="trans-date"
+              name="trans-date"
+              required
+            />
+
+            <label for="trans-category">Category</label>
+            <select id="trans-category" name="trans-category" required>
+              <option value="">Please choose an option</option>
+              <option value="Food">Food</option>
+              <option value="Books">Books</option>
+              <option value="Transport">Transport</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Health">Health</option>
+            </select>
+            <button id="transdetails-submit">Submit Transaction</button>
+            <button id="transdetails-cancel" type="button">Cancel</button>
+            <!--With Confirmation-->
+          </fieldset>
+        </form>
+      </section>
+      <br />
+      <button id="addtranscation-btn">Add Transaction</button>
+    </main>
+    <footer>
+      <p>Created by Nadiv Gicheru 😜</p>
+      <p>&copy; 2026</p>
+    </footer>
   </body>
 </html>
