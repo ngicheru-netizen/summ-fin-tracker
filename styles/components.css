@@ -1,0 +1,66 @@
+/* Navigattion */
+nav {
+  background: var(--color-bg-secondary);
+  padding: 1rem;
+}
+
+nav a {
+  padding: 0.25rem 0.25rem;
+  display: block;
+}
+
+nav a:hover {
+  background-color: rgba(37, 79, 139, 0.1);
+  text-decoration: underline;
+  border-radius: 3px;
+}
+ol {
+  padding: 0.75rem 1rem;
+}
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+
+  color: white;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+.btn-primary {
+  background-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+.btn-secondary:hover {
+  opacity: 0.85;
+}
+
+.btn-danger {
+  background-color: var(--color-accent);
+}
+
+.btn-danger:hover {
+  opacity: 0.85;
+}
+
+/* Cards */
+.card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}

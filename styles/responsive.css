@@ -1,0 +1,32 @@
+@media (min-width: 768px) {
+  .trans-cards {
+    display: flex;
+  }
+  .card {
+    width: 50%;
+  }
+  nav ol {
+    display: flex;
+    justify-content: center;
+  }
+  main,
+  body {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .trans-cards {
+    display: flex;
+  }
+  .card {
+    width: 50%;
+  }
+  nav ol {
+    display: flex;
+  }
+  main,
+  body {
+    padding: 4rem;
+  }
+}
