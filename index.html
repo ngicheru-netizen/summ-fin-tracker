@@ -4,13 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Finance Tracker</title>
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
+    <script type="module" src="scripts/app.js"></script>
   </head>
   <body>
     <header>
       <!--Welcome-->
-      <h1>Student Finance Tracker</h1>
+      <h1>Akiba Finance Tracker</h1>
 
-      <h2>Welcome Back, John Doe</h2>
+      <h2>Check out your financial situation</h2>
     </header>
 
     <!-- Collapsible Navigation Banner Section -->
@@ -29,33 +33,18 @@
       <!--Main Section-->
       <section id="transaction-recent">
         <!--Summary of transactions-->
-
         <h2>Recent Transactions</h2>
-        <div class="trans-cards">
-          <article class="card" data-id="">
-            <h3>Coffee</h3>
-            <dl>
-              <dt>Cost</dt>
-              <dd></dd>
-              <dt>Date</dt>
-              <dd></dd>
-              <dt>Category</dt>
-              <dd></dd>
-            </dl>
-          </article>
-
-          <!-- JS will populate these -->
-        </div>
+        <div class="trans-cards"></div>
       </section>
 
-      <section id="trans-details" hidden>
+      <section id="trans-details">
         <!--Transaction Details section-->
         <h2>Transaction Details</h2>
         <!--panel that shows in detail the chosen transaction-->
       </section>
 
       <!--'Add Transaction' Form... JS will load form once button is clicked.-->
-      <section id="trans-form" hidden>
+      <section id="trans-form-section">
         <form id="transactionform">
           <fieldset>
             <legend>Add New Transaction</legend>
@@ -99,14 +88,28 @@
               <option value="Entertainment">Entertainment</option>
               <option value="Health">Health</option>
             </select>
-            <button id="transdetails-submit">Submit Transaction</button>
-            <button id="transdetails-cancel" type="button">Cancel</button>
+            <button
+              id="transdetails-submit"
+              class="btn btn-primary"
+              type="submit"
+            >
+              Submit Transaction
+            </button>
+            <button
+              id="transdetails-cancel"
+              type="button"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </button>
             <!--With Confirmation-->
           </fieldset>
         </form>
       </section>
       <br />
-      <button id="addtranscation-btn">Add Transaction</button>
+      <button id="addtranscation-btn" class="btn btn-primary">
+        Add Transaction
+      </button>
     </main>
     <footer>
       <p>Created by Nadiv Gicheru 😜</p>

@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings</title>
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
   </head>
   <body>
     <header>
@@ -84,8 +87,12 @@
               <small>Set the cap in your selected base currency (above)</small>
             </p>
           </fieldset>
-          <button id="change-currency">Save Changes</button>
-          <button id="cancel-change-currency">Cancel</button>
+          <button id="change-currency" class="btn btn-primary">
+            Save Changes
+          </button>
+          <button id="cancel-change-currency" class="btn btn-secondary">
+            Cancel
+          </button>
           <!--With Confirmation-->
         </form>
       </section>
@@ -121,7 +128,9 @@
             <button class="delete-category-button">Delete</button>
           </li>
         </ul>
-        <button id="add-category-btn">Add Category</button>
+        <button id="add-category-btn" class="btn btn-primary">
+          Add Category
+        </button>
         <section id="category-form" hidden>
           <form id="cat-form">
             <fieldset>
@@ -129,12 +138,18 @@
               <input type="hidden" id="cat-id" />
               <label for="cat-name">Category Name</label>
               <input type="text" id="cat-name" required />
-              <button id="cat-cancel" type="button">Cancel</button>
-              <button id="save-category">Save Category</button>
+              <button id="cat-cancel" type="button" class="btn btn-secondary">
+                Cancel
+              </button>
+              <button id="save-category" class="btn btn-primary">
+                Save Category
+              </button>
             </fieldset>
           </form>
         </section>
-        <button id="save-all-categories">Save Changes</button>
+        <button id="save-all-categories" class="btn btn-primary">
+          Save Changes
+        </button>
       </section>
     </main>
     <footer>

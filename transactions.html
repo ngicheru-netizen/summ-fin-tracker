@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transactions</title>
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
+    <script type="module">
+      import { initTransactions } from "./scripts/state.js";
+      import {
+        renderRecentTable,
+        setupAddTransactionToggle,
+      } from "./scripts/ui.js";
+      window.addEventListener("DOMContentLoaded", () => {
+        initTransactions();
+        renderRecentTable();
+        setupAddTransactionToggle();
+      });
+    </script>
   </head>
   <body>
     <header>
@@ -26,7 +41,7 @@
           <input
             type="text"
             id="trans-search"
-            placeholder="Search for transactions"
+            placeholder=" Search transactions"
           />
         </form>
 
@@ -44,6 +59,7 @@
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             <!-- This will be populated by the transaction history data -->
             <!-- Delete Later... Each row will have: -->
@@ -70,7 +86,7 @@
       <!---->
       <!---->
       <!-------------------------Transaction Form------------------------------->
-      <section id="trans-form" hidden>
+      <section id="trans-form-section" hidden>
         <!--'Add Transaction' Form... JS will load form once button is clicked.-->
 
         <form id="transactionform">
@@ -111,14 +127,24 @@
               <option value="Entertainment">Entertainment</option>
               <option value="Health">Health</option>
             </select>
-            <button id="transdetails-submit">Submit Transaction</button>
-            <button id="transdetails-cancel" type="button">Cancel</button>
+            <button id="transdetails-submit" class="btn btn-primary">
+              Submit Transaction
+            </button>
+            <button
+              id="transdetails-cancel"
+              type="button"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </button>
             <!--With Confirmation-->
           </fieldset>
         </form>
       </section>
       <br />
-      <button id="addtranscation-btn">Add Transaction</button>
+      <button id="addtranscation-btn" class="btn btn-primary">
+        Add Transaction
+      </button>
     </main>
     <footer>
       <p>Created by Nadiv Gicheru 😜</p>
