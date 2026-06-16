@@ -21,8 +21,9 @@ export function renderRecentTransactions() {
   }
 }
 //show transactions on table
-export function renderRecentTable() {
-  const allTrans = getTransactions();
+export function renderRecentTable(transactionArray) {
+  //use passed array if exists, otherwise get from state.js
+  const allTrans = transactionArray || getTransactions();
   //   console.log("All transactions:", allTrans);
   const tbody = document.querySelector("table tbody");
   //   console.log("tbody element:", tbody);
@@ -208,4 +209,69 @@ export function showTransactionDetails(transaction) {
       console.log("User canceled");
     }
   });
+}
+
+export function setupSortHeaders() {
+  const th = document.querySelectorAll("th[data-sort]");
+  console.log("headers found", th.length);
+
+  for (const headers of th) {
+    headers.addEventListener("click", (event) => {
+      console.log("Header clicked!");
+      const sortType = event.target.getAttribute("data-sort");
+      const table = document.querySelector("table");
+
+      const currentColumn = table.getAttribute("data-sort-column");
+      const currentColDirection = table.getAttribute("data-sort-direction");
+
+      let newDirection;
+      if (currentColumn === sortType) {
+        if (currentColDirection === "asc") {
+          newDirection = "desc";
+        } else {
+          newDirection = "asc";
+        }
+      } else {
+        newDirection = "asc";
+      }
+      table.setAttribute("data-sort-column", sortType);
+      table.setAttribute("data-sort-direction", newDirection);
+
+      //clear & show
+      const allTrans = getTransactions();
+      console.log("All transactions", allTrans);
+      const sortedTransactions = allTrans.sort((a, b) => {
+        const comparison = String(a[sortType]).localeCompare(
+          String(b[sortType]),
+        );
+        if (newDirection === "asc") {
+          return comparison;
+        } else {
+          return -comparison;
+        }
+      });
+      const tbody = document.querySelector("table tbody");
+      tbody.innerHTML = "";
+      renderRecentTable(sortedTransactions);
+
+      document.querySelectorAll("th[data-sort]").forEach((header) => {
+        header.textContent = header.textContent.replace(/\s*[↑↓]/g, "");
+
+        if (header.getAttribute("data-sort") === currentColumn) {
+          let direction;
+          if (table.getAttribute("data-sort-direction") === "asc") {
+            direction = "↑";
+          } else {
+            direction = "↓";
+          }
+        }
+        //Ascending / Descending symbol
+        if (header.getAttribute("data-sort") === sortType) {
+          let direction =
+            table.getAttribute("data-sort-direction") === "asc" ? "↑" : "↓";
+          header.textContent += " " + direction; // Actually append it
+        }
+      });
+    });
+  }
 }

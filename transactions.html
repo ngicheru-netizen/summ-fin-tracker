@@ -12,11 +12,13 @@
       import {
         renderRecentTable,
         setupAddTransactionToggle,
+        setupSortHeaders,
       } from "./scripts/ui.js";
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
         renderRecentTable();
         setupAddTransactionToggle();
+        setupSortHeaders();
       });
     </script>
   </head>
@@ -46,16 +48,16 @@
         </form>
 
         <h2>Transaction History</h2>
-        <table>
+        <table data-sort-column="table" data-sort-direction="asc">
           <thead>
             <tr>
-              <th>Transaction ID</th>
+              <th data-sort="id">Transaction ID</th>
               <th>Description</th>
-              <th>Amount</th>
-              <th>Category</th>
-              <th>Date</th>
-              <th>Created</th>
-              <th>Last Edited</th>
+              <th data-sort="amount">Amount</th>
+              <th data-sort="category">Category</th>
+              <th data-sort="date">Date</th>
+              <th data-sort="createdAt">Created</th>
+              <th data-sort="editedAt">Last Edited</th>
               <th>Actions</th>
             </tr>
           </thead>

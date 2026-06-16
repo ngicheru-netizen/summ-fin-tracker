@@ -126,3 +126,7 @@ ol {
 #trans-details.hidme {
   right: -500px;
 }
+
+th[data-sort] {
+  cursor: pointer;
+}
