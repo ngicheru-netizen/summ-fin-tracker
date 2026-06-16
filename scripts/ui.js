@@ -1,4 +1,4 @@
-import { getTransactions, addTransaction } from "./state.js";
+import { getTransactions, addTransaction, deleteTransaction } from "./state.js";
 
 //show last 5 transactions on cards on home page
 export function renderRecentTransactions() {
@@ -23,9 +23,11 @@ export function renderRecentTransactions() {
 //show transactions on table
 export function renderRecentTable() {
   const allTrans = getTransactions();
-  console.log("All transactions:", allTrans);
+  //   console.log("All transactions:", allTrans);
   const tbody = document.querySelector("table tbody");
-  console.log("tbody element:", tbody);
+  //   console.log("tbody element:", tbody);
+
+  if (!tbody) return; //leave if table doesn't exist
 
   for (const eachTrans of allTrans) {
     const row = `<tr data-id="${eachTrans.id}">
@@ -50,22 +52,22 @@ export function renderRecentTable() {
 
 export function setupAddTransactionToggle() {
   const addToggle = document.querySelector("#addtranscation-btn"); //targeting button
-  const getForm = document.getElementById("trans-form-section"); //hidden form that will appear when button is clicked
+  const detailsSummary = document.getElementById("trans-form-section"); //hidden form that will appear when button is clicked
   const cancelBtn = document.querySelector("#transdetails-cancel");
 
   //when button clicked, show form
 
   addToggle.addEventListener("click", (Event) => {
-    getForm.classList.remove("hideme");
-    getForm.classList.add("showme");
+    detailsSummary.classList.remove("hideme");
+    detailsSummary.classList.add("showme");
   });
 
   //when cancel clicked, hide form
   cancelBtn.addEventListener("click", (Event) => {
-    getForm.classList.remove("showme");
-    getForm.classList.add("hideme");
+    detailsSummary.classList.remove("showme");
+    detailsSummary.classList.add("hideme");
     setTimeout(() => {
-      getForm.classList.remove("hideme");
+      detailsSummary.classList.remove("hideme");
     }, 500);
   });
 }
@@ -98,20 +100,112 @@ export function setupFormSubmission() {
 
     form.reset();
 
-    //clear containers to avoid duplicates
-    document.querySelector(".trans-cards").innerHTML = "";
-    document.querySelector("table tbody").innerHTML = "";
+    const tbody = document.querySelector("table tbody");
+    const transCards = document.querySelector(".trans-cards");
+    if (transCards) transCards.innerHTML = "";
+    if (tbody) tbody.innerHTML = "";
 
     //render pages again
-    renderRecentTransactions();
     renderRecentTable();
+    renderRecentTransactions();
 
     //Hide for when done
-    const getForm = document.getElementById("trans-form-section");
-    getForm.classList.remove("showme");
-    getForm.classList.add("hideme");
+    const detailsSummary = document.getElementById("trans-form-section");
+    detailsSummary.classList.remove("showme");
+    detailsSummary.classList.add("hideme");
     setTimeout(() => {
-      getForm.classList.remove("hideme");
+      detailsSummary.classList.remove("hideme");
     }, 500);
+  });
+}
+
+//make card clickable - after clicking full transaction page loads.
+export function setupCardClickListener() {
+  console.log("listener called");
+  const container = document.querySelector(".trans-cards");
+
+  container.addEventListener("click", (event) => {
+    const clickCard = event.target.closest(".card");
+
+    const transId = clickCard.getAttribute("data-id");
+
+    const trans = getTransactions().find((item) => item.id === transId);
+
+    showTransactionDetails(trans);
+  });
+}
+
+export function showTransactionDetails(transaction) {
+  const details = document.getElementById("trans-details");
+  const contentDiv = details.querySelector(".details-content");
+
+  //for html
+  const detailsHtml = `
+    <h3>${transaction.description}</h3>
+    <dl>
+    <dt>Transaction ID</dt>
+    <dd>${transaction.id}</dd>
+      <dt>Amount</dt>
+      <dd>${transaction.amount}</dd>
+      <dt>Category</dt>
+      <dd>${transaction.category}</dd>
+      <dt>Date</dt>
+      <dd>${transaction.date}</dd>
+      <dt>Location</dt>
+      <dd>${transaction.location}</dd>
+    </dl>
+    <button class="btn btn-primary trans-edit-btn">Edit</button>
+    <button class="btn btn-danger trans-del-btn">Delete</button>
+     <button
+              id="transdetails-cancel"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </button>`;
+
+  contentDiv.innerHTML = detailsHtml;
+  details.classList.add("showme");
+  //cancel button to get out of transaction details card
+  const detailsSummary = document.getElementById("trans-details");
+  const cancelBtn = details.querySelector("#transdetails-cancel");
+
+  //when cancel clicked, hide form
+  cancelBtn.addEventListener("click", (event) => {
+    detailsSummary.classList.remove("showme");
+    detailsSummary.classList.add("hideme");
+    setTimeout(() => {
+      detailsSummary.classList.remove("hideme");
+    }, 500);
+  });
+
+  //delete button
+  const deleteBtn = detailsSummary.querySelector(".trans-del-btn");
+  deleteBtn.addEventListener("click", (event) => {
+    if (
+      window.confirm("Are you sure you'd like to continue with this action?")
+    ) {
+      console.log("User confirmed");
+      deleteTransaction(transaction.id);
+
+      //if exists clear containers to avoid duplicates
+      const tbody = document.querySelector("table tbody");
+      const transCards = document.querySelector(".trans-cards");
+      if (transCards) transCards.innerHTML = "";
+      if (tbody) tbody.innerHTML = "";
+
+      //render pages again
+      renderRecentTable();
+      renderRecentTransactions();
+
+      // close panel
+      detailsSummary.classList.remove("showme");
+      detailsSummary.classList.add("hideme");
+
+      setTimeout(() => {
+        detailsSummary.classList.remove("hideme");
+      }, 500);
+    } else {
+      console.log("User canceled");
+    }
   });
 }

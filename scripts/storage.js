@@ -15,7 +15,11 @@ export function saveTransactions(transactionArray) {
   // input: array of transactions (when addTransaction is clicked)
   // Ouput: nothing returns or true, if function is successful
   //code logic: save added transactions to localStorage
-  localStorage.setItem("app:transactions", JSON.stringify(transactionArray));
+  //ONLY SAVE IF ARRAY IS VALID
+  localStorage.setItem(
+    "app:transactions",
+    JSON.stringify(transactionArray ?? []), //if undefined, save empty array
+  );
 }
 
 export function loadSettings() {

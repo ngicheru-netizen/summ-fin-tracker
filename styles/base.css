@@ -35,6 +35,12 @@ body {
   line-height: 1.7;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+    url("../Assets/two-men-on-beach.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 :root {

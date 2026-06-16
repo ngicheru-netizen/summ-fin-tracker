@@ -20,3 +20,9 @@ export function getTransactions() {
   //loads most recent array
   return transactions;
 }
+
+export function deleteTransaction(deleteId) {
+  transactions = transactions.filter((item) => item.id !== deleteId);
+
+  saveTransactions(transactions);
+}

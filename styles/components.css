@@ -77,7 +77,7 @@ ol {
 
 @keyframes slideIn {
   from {
-    transform: translateX(-100);
+    transform: translateX(-100px);
     opacity: 0;
   }
   to {
@@ -97,6 +97,32 @@ ol {
   }
   to {
     opacity: 0;
-    transform: translateX(-100);
+    transform: translateX(-100px);
   }
+}
+#trans-details {
+  /* by default, display is hidden */
+  /* display: none; */
+  position: relative;
+  background: var(--color-bg-primary);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2;
+  box-shadow: 0 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5 rem;
+
+  max-height: 0;
+  max-width: fit-content;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+#trans-details.showme {
+  right: 20px;
+  max-height: 500px;
+  /* animation-delay: 2s; */
+}
+
+#trans-details.hidme {
+  right: -500px;
 }
