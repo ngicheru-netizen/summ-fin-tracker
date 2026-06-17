@@ -3,6 +3,9 @@ import {
   addTransaction,
   deleteTransaction,
   updateTransaction,
+  getSpentbyCategory,
+  getTotalSpent,
+  getTotalSpentThisMonth,
 } from "./state.js";
 
 //show last 5 transactions on cards on home page
@@ -84,6 +87,14 @@ export function setupAddTransactionToggle() {
 export function setupFormSubmission() {
   const form = document.getElementById("transactionform");
 
+  // cap date picker to today (no future dates)
+  const dateInput = form.elements["trans-date"];
+  if (dateInput) {
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset()); // local time
+    dateInput.max = today.toISOString().slice(0, 10); // "yyyy-MM-dd"
+  }
+
   //listen to form "submit" event
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -93,6 +104,40 @@ export function setupFormSubmission() {
     const timedate = form.elements["trans-date"].value;
     const category = form.elements["trans-category"].value;
 
+    //regex validation:
+
+    if (summary.trim() === "") {
+      //if empty, show error
+      //error
+      alert("Summary is required!");
+      return;
+    }
+
+    const cleanedSummary = summary.trim().replace(/\s+/g, " ");
+    let regCost = /^\d+(\.\d{2})?$/;
+    let regDate = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (!regCost.test(cost)) {
+      alert("Invalid Amount!");
+      return;
+    }
+
+    if (!regDate.test(timedate)) {
+      alert("Invalid Date");
+      return;
+    }
+    //bug - future dates are allowed to submit
+    //fix enforce invalid date rejection.
+
+    if (new Date(timedate) > new Date()) {
+      alert("Nice Try! Transaction date cannot be in the future!");
+      return;
+    }
+    if (category.trim() === "") {
+      alert("Category is required!");
+      return;
+    }
+
     //detect if it's an edit situation or an add Transaction situation.
 
     const transId = form.elements["trans-id"].value;
@@ -100,7 +145,7 @@ export function setupFormSubmission() {
       //edit
 
       const updatedData = {
-        description: summary,
+        description: cleanedSummary,
         amount: parseFloat(cost),
         location: location,
         category: category,
@@ -111,7 +156,7 @@ export function setupFormSubmission() {
     } else {
       const newTransaction = {
         id: "txn_" + Date.now(),
-        description: summary,
+        description: cleanedSummary,
         amount: parseFloat(cost),
         location: location,
         category: category,
@@ -183,7 +228,7 @@ export function showTransactionDetails(transaction) {
       <dt>Location</dt>
       <dd>${transaction.location}</dd>
       <dt>Last Updated</dt>
-      <dd>${new Date(transaction.updatedAt).toLocaleString()}
+      <dd>${new Date(transaction.updatedAt).toLocaleString()}</dd>
     </dl>
     <button class="btn btn-primary trans-edit-btn">Edit</button>
     <button class="btn btn-danger trans-del-btn">Delete</button>
@@ -455,3 +500,45 @@ function populateFormforEdit(transaction) {
   legend.textContent = "Edit Transaction";
   submitBtn.textContent = "Update Transaction";
 } //one form for both pages
+
+// export function showCategoryTotals() {
+//   //total expenditure per category
+//   const categories = [
+//     "Food",
+//     "Utilities",
+//     "Books",
+//     "Transport",
+//     "Entertainment",
+//     "Health",
+//   ];
+//   const container = document.querySelector(".category-totals");
+//   if (!container) return;
+// }
+// container.innerHTML = "";
+// for (const cat of categories) {
+//   const total = getSpentByCategory(cat);
+//   container.innerHTML += `<p>${cat}: ${total}</p>`;
+// }
+
+export function showDashboardStats() {
+  const byCategory = getSpentbyCategory();
+  const thisMonth = getTotalSpentThisMonth();
+  const total = getTotalSpent();
+
+  console.log("byCategory:", byCategory);
+  console.log("thisMonth:", thisMonth);
+  console.log("total:", total);
+
+  const tbody = document.querySelector("table tbody");
+  if (!tbody) return;
+  tbody.innerHTML = ""; //clears whatever is there to avoid duplicates
+  for (const category of Object.keys(byCategory)) {
+    //for loops cant iterate through objects directly, so I have to use Object.keys(byCategory)
+    const amount = byCategory[category]; //look up by key
+    document.getElementById("spent-this-month").textContent =
+      "$" + thisMonth.toFixed(2);
+    document.getElementById("total-usd").textContent =
+      "$" + thisMonth.toFixed(2);
+    tbody.innerHTML += `<tr><td>${category}</td><td>$${amount.toFixed(2)}</td></tr>`;
+  }
+}

@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
+    <script type="module">
+      import { showDashboardStats } from "./scripts/ui.js";
+      import { initTransactions } from "./scripts/state.js";
+      window.addEventListener("DOMContentLoaded", () => {
+        initTransactions();
+        showDashboardStats();
+      });
+    </script>
   </head>
 
   <body>
@@ -34,6 +42,25 @@
           <p>Monthly Budget Cap: <span id="budget-cap">$0.00</span></p>
           <p>Spent This Month: <span id="spent-this-month">$0.00</span></p>
           <p>Amount Remaining: <span id="amount-remaining">$0.00</span></p>
+        </div>
+      </section>
+
+      <section id="category-breakdown">
+        <h2>Spending by Category</h2>
+        <div class="card">
+          <div id="category-breakdown-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="tb-category-list">
+                <!-- js -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 

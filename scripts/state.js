@@ -1,6 +1,6 @@
 import { loadTransactions, saveTransactions } from "./storage.js";
 
-let transactions = []; //global variable that will be used in the three functions
+let transactions = []; //global variable that will be used in the functions
 
 export function initTransactions() {
   //initiate transactions from app start
@@ -40,4 +40,45 @@ export function updateTransaction(id, updatedData) {
     return transaction;
   });
   saveTransactions(transactions);
+}
+
+export function getTotalSpent() {
+  let total = 0;
+  for (const transaction of transactions) {
+    total = total + transaction.amount;
+  }
+  return total;
+}
+
+export function getTotalSpentThisMonth() {
+  const today = new Date();
+  const thisMonth = today.getMonth() + 1;
+  const thisYear = today.getFullYear();
+
+  let total = 0;
+  for (const transaction of transactions) {
+    const parts = transaction.date.split("-");
+    const txYear = Number(parts[0]);
+    const txMonth = Number(parts[1]);
+
+    if (txMonth === thisMonth && txYear === thisYear) {
+      total = total + transaction.amount;
+    }
+  }
+  return total;
+}
+
+export function getSpentbyCategory() {
+  const categoryTotals = {};
+
+  for (const transaction of transactions) {
+    const cat = transaction.category;
+
+    //if category doesn't exist, create one with 0
+    if (!categoryTotals[cat]) {
+      categoryTotals[cat] = 0;
+    }
+    categoryTotals[cat] = categoryTotals[cat] + transaction.amount;
+  }
+  return categoryTotals;
 }
