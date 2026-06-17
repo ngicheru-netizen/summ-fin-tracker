@@ -68,6 +68,12 @@ ol {
 #trans-form-section {
   /* by default, display is hidden */
   display: none;
+  background: var(--color-bg-primary);
+  border: 3 solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
 }
 
 #trans-form-section.showme {
@@ -129,4 +135,12 @@ ol {
 
 th[data-sort] {
   cursor: pointer;
+}
+
+form {
+  font-size: 1.25rem;
+  padding: 4px;
+  margin-bottom: 3rem;
+  max-width: max-content;
+  max-height: max-content;
 }

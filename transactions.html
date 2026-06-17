@@ -13,12 +13,16 @@
         renderRecentTable,
         setupAddTransactionToggle,
         setupSortHeaders,
+        setupSearch,
+        setupTableEditBtn,
       } from "./scripts/ui.js";
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
         renderRecentTable();
         setupAddTransactionToggle();
         setupSortHeaders();
+        setupSearch();
+        setupTableEditBtn();
       });
     </script>
   </head>
@@ -78,8 +82,9 @@
 
       <!--Transaction Details Panel-->
 
-      <section id="trans-details" hidden>
+      <section id="trans-details">
         <h2>Transaction ID</h2>
+        <div class="details-content"></div>
       </section>
       <!--'Add Transaction' Form... JS will load form once button is clicked.-->
       <!---->
@@ -144,7 +149,7 @@
         </form>
       </section>
       <br />
-      <button id="addtranscation-btn" class="btn btn-primary">
+      <button id="addtransaction-btn" class="btn btn-primary">
         Add Transaction
       </button>
     </main>

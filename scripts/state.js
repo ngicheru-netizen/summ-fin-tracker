@@ -26,3 +26,13 @@ export function deleteTransaction(deleteId) {
 
   saveTransactions(transactions);
 }
+
+export function updateTransaction(id, updatedData) {
+  transactions = transactions.map((transaction) => {
+    if (transaction.id === id) {
+      return { ...updatedData, updatedAt: new Date().toISOString() };
+    }
+    return transaction;
+  });
+  saveTransactions(transactions);
+}

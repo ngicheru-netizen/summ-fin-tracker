@@ -1,4 +1,9 @@
-import { getTransactions, addTransaction, deleteTransaction } from "./state.js";
+import {
+  getTransactions,
+  addTransaction,
+  deleteTransaction,
+  updateTransaction,
+} from "./state.js";
 
 //show last 5 transactions on cards on home page
 export function renderRecentTransactions() {
@@ -52,7 +57,7 @@ export function renderRecentTable(transactionArray) {
 //click on "Add Transaction" button, form  slides to visibility
 
 export function setupAddTransactionToggle() {
-  const addToggle = document.querySelector("#addtranscation-btn"); //targeting button
+  const addToggle = document.querySelector("#addtransaction-btn"); //targeting button
   const detailsSummary = document.getElementById("trans-form-section"); //hidden form that will appear when button is clicked
   const cancelBtn = document.querySelector("#transdetails-cancel");
 
@@ -87,24 +92,46 @@ export function setupFormSubmission() {
     const timedate = form.elements["trans-date"].value;
     const category = form.elements["trans-category"].value;
 
-    const newTransaction = {
-      id: "txn_" + Date.now(),
-      description: summary,
-      amount: parseFloat(cost),
-      location: location,
-      category: category,
-      date: timedate,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    addTransaction(newTransaction);
+    //detect if it's an edit situation or an add Transaction situation.
 
+    const transId = form.elements["trans-id"].value;
+    if (transId) {
+      //edit
+
+      const updatedData = {
+        description: summary,
+        amount: parseFloat(cost),
+        location: location,
+        category: category,
+        date: timedate,
+        updatedAt: new Date().toISOString(),
+      };
+      updateTransaction(transId, updatedData);
+    } else {
+      const newTransaction = {
+        id: "txn_" + Date.now(),
+        description: summary,
+        amount: parseFloat(cost),
+        location: location,
+        category: category,
+        date: timedate,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      addTransaction(newTransaction);
+    }
     form.reset();
-
+    //reset to add Mode
+    const legend = form.querySelector("legend");
+    const submitBtn = form.querySelector("button[type='submit']");
     const tbody = document.querySelector("table tbody");
     const transCards = document.querySelector(".trans-cards");
     if (transCards) transCards.innerHTML = "";
     if (tbody) tbody.innerHTML = "";
+    legend.textContent = "Add/Edit Transaction";
+    submitBtn.textContent = "Submit Transaction";
+    form.elements["trans-id"].value = "";
 
     //render pages again
     renderRecentTable();
@@ -209,7 +236,42 @@ export function showTransactionDetails(transaction) {
       console.log("User canceled");
     }
   });
+
+  //edit buttion
+  const editBtn = detailsSummary.querySelector(".trans-edit-btn");
+  //when editBtn is clicked
+
+  editBtn.addEventListener("click", (event) => {
+    const form = document.getElementById("transactionform");
+    const legend = form.querySelector("legend");
+    const submitBtn = form.querySelector("button[type='submit']");
+
+    form.elements["trans-id"].value = transaction.id;
+    form.elements["trans-summary"].value = transaction.description;
+    form.elements["trans-cost"].value = transaction.amount;
+    form.elements["trans-location-city"].value = transaction.location;
+    form.elements["trans-date"].value = transaction.date;
+    form.elements["trans-category"].value = transaction.category;
+
+    //when editing, legend and submit button will change text
+
+    legend.textContent = "Edit Transaction";
+    submitBtn.textContent = "Update Transaction";
+
+    const formSection = document.getElementById("trans-form-section");
+    formSection.classList.remove("hideme");
+    formSection.classList.add("showme");
+
+    // close the details panel
+    detailsSummary.classList.remove("showme");
+    detailsSummary.classList.add("hideme");
+    setTimeout(() => {
+      detailsSummary.classList.remove("hideme");
+    }, 500);
+  });
 }
+
+//Sort through transactions in ascending or descending order
 
 export function setupSortHeaders() {
   const th = document.querySelectorAll("th[data-sort]");
@@ -275,3 +337,65 @@ export function setupSortHeaders() {
     });
   }
 }
+
+//filter through transactions using search box
+export function setupSearch() {
+  const searchInput = document.getElementById("trans-search");
+
+  searchInput.addEventListener("input", (event) => {
+    const searchTerm = event.target.value;
+    const allTrans = getTransactions();
+    //filter transactions
+
+    const filtered = allTrans.filter((trans) => {
+      return (
+        //if search matches category ||(or) description || amount || transaction ID
+        //category isn't case sensitive
+        //ID isn't case sensitive
+        //description isn't case sensitive
+        //amount has to be exact match
+        trans.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trans.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trans.amount === parseFloat(searchTerm) ||
+        trans.id.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = "";
+    renderRecentTable(filtered);
+  });
+}
+
+export function setupTableEditBtn() {
+  const table = document.querySelector("table");
+  if (!table) return;
+
+  table.addEventListener("click", (event) => {
+    const editBtn = event.target.closest(".trans-edit-btn");
+    if (!editBtn) return; // a click somewhere else in the table
+
+    console.log("edit button clicked!");
+    const row = editBtn.closest("tr");
+    const allTrans = getTransactions();
+    const transId = row.getAttribute("data-id");
+    const transaction = allTrans.find((item) => item.id === transId);
+    console.log("Transaction found:", transaction);
+
+    showTransactionDetails(transaction);
+    console.log("details functions called");
+  });
+}
+//   const tr = document.querySelectorAll(".trans-edit-btn");
+
+//   for (const editbutton of tr) {
+//     editbutton.addEventListener("click", (event) => {
+//       console.log("edit button clicked clicked!");
+//       const row = event.target.closest("tr");
+//       const allTrans = getTransactions();
+//       const transId = row.getAttribute("data-id");
+//       const transaction = allTrans.find((item) => item.id === transId);
+
+//       showTransactionDetails(transaction);
+//     });
+//   }
+// }
