@@ -182,6 +182,8 @@ export function showTransactionDetails(transaction) {
       <dd>${transaction.date}</dd>
       <dt>Location</dt>
       <dd>${transaction.location}</dd>
+      <dt>Last Updated</dt>
+      <dd>${new Date(transaction.updatedAt).toLocaleString()}
     </dl>
     <button class="btn btn-primary trans-edit-btn">Edit</button>
     <button class="btn btn-danger trans-del-btn">Delete</button>
