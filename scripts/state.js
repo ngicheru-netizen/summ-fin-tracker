@@ -30,7 +30,12 @@ export function deleteTransaction(deleteId) {
 export function updateTransaction(id, updatedData) {
   transactions = transactions.map((transaction) => {
     if (transaction.id === id) {
-      return { ...updatedData, updatedAt: new Date().toISOString() };
+      return {
+        //keeps original
+        ...transaction,
+        ...updatedData,
+        updatedAt: new Date().toISOString(),
+      };
     }
     return transaction;
   });

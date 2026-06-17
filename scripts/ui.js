@@ -11,6 +11,7 @@ export function renderRecentTransactions() {
   const lastFive = allTrans.slice(-5);
 
   const container = document.querySelector(".trans-cards");
+  if (!container) return;
   for (const eachTrans of lastFive) {
     container.innerHTML += `<article class="card" data-id="${eachTrans.id}">
       <h3>${eachTrans.description}</h3>
@@ -242,22 +243,9 @@ export function showTransactionDetails(transaction) {
   //when editBtn is clicked
 
   editBtn.addEventListener("click", (event) => {
-    const form = document.getElementById("transactionform");
-    const legend = form.querySelector("legend");
-    const submitBtn = form.querySelector("button[type='submit']");
+    //call helper function
 
-    form.elements["trans-id"].value = transaction.id;
-    form.elements["trans-summary"].value = transaction.description;
-    form.elements["trans-cost"].value = transaction.amount;
-    form.elements["trans-location-city"].value = transaction.location;
-    form.elements["trans-date"].value = transaction.date;
-    form.elements["trans-category"].value = transaction.category;
-
-    //when editing, legend and submit button will change text
-
-    legend.textContent = "Edit Transaction";
-    submitBtn.textContent = "Update Transaction";
-
+    populateFormforEdit(transaction);
     const formSection = document.getElementById("trans-form-section");
     formSection.classList.remove("hideme");
     formSection.classList.add("showme");
@@ -366,25 +354,26 @@ export function setupSearch() {
   });
 }
 
-export function setupTableEditBtn() {
-  const table = document.querySelector("table");
-  if (!table) return;
+//Refactored and now using setupTableActions(); instead
+// export function setupTableEditBtn() {
+//   const table = document.querySelector("table");
+//   if (!table) return;
 
-  table.addEventListener("click", (event) => {
-    const editBtn = event.target.closest(".trans-edit-btn");
-    if (!editBtn) return; // a click somewhere else in the table
+// table.addEventListener("click", (event) => {
+//   const editBtn = event.target.closest(".trans-edit-btn");
+//   if (!editBtn) return; // a click somewhere else in the table
 
-    console.log("edit button clicked!");
-    const row = editBtn.closest("tr");
-    const allTrans = getTransactions();
-    const transId = row.getAttribute("data-id");
-    const transaction = allTrans.find((item) => item.id === transId);
-    console.log("Transaction found:", transaction);
+//   console.log("edit button clicked!");
+//   const row = editBtn.closest("tr");
+//   const allTrans = getTransactions();
+//   const transId = row.getAttribute("data-id");
+//   const transaction = allTrans.find((item) => item.id === transId);
+//   console.log("Transaction found:", transaction);
 
-    showTransactionDetails(transaction);
-    console.log("details functions called");
-  });
-}
+//   showTransactionDetails(transaction);
+//   console.log("details functions called");
+// });
+// }
 //   const tr = document.querySelectorAll(".trans-edit-btn");
 
 //   for (const editbutton of tr) {
@@ -399,3 +388,68 @@ export function setupTableEditBtn() {
 //     });
 //   }
 // }
+
+export function setupTableActions() {
+  //consolidate edit and delete functionalities on all pages
+  const table = document.querySelector("table");
+  if (!table) return;
+
+  table.addEventListener("click", (event) => {
+    const editBtn = event.target.closest(".trans-edit-btn");
+    const deleteBtn = event.target.closest(".trans-del-btn");
+
+    if (editBtn) {
+      const row = editBtn.closest("tr");
+      const transId = row.getAttribute("data-id");
+      const transaction = getTransactions().find((item) => item.id === transId);
+      // console.log("Transaction found:", transaction);
+
+      // showTransactionDetails(transaction); redundant display of transaction details
+      // console.log("details functions called");
+
+      populateFormforEdit(transaction);
+      const formSection = document.getElementById("trans-form-section");
+      formSection.classList.remove("hideme");
+      formSection.classList.add("showme");
+    } else if (deleteBtn) {
+      //delete button
+      const row = deleteBtn.closest("tr");
+      const transID = row.getAttribute("data-id");
+
+      if (
+        window.confirm("Are you sure you'd like to continue with this action?")
+      ) {
+        console.log("User confirmed");
+        deleteTransaction(transID);
+
+        //if exists clear containers to avoid duplicates
+        const tbody = document.querySelector("table tbody");
+        const transCards = document.querySelector(".trans-cards");
+        if (transCards) transCards.innerHTML = "";
+        if (tbody) tbody.innerHTML = "";
+
+        //render pages again
+        renderRecentTable();
+        renderRecentTransactions();
+      }
+    }
+  });
+}
+
+function populateFormforEdit(transaction) {
+  const form = document.getElementById("transactionform");
+  const legend = form.querySelector("legend");
+  const submitBtn = form.querySelector("button[type='submit']");
+
+  form.elements["trans-id"].value = transaction.id;
+  form.elements["trans-summary"].value = transaction.description;
+  form.elements["trans-cost"].value = transaction.amount;
+  form.elements["trans-location-city"].value = transaction.location;
+  form.elements["trans-date"].value = transaction.date;
+  form.elements["trans-category"].value = transaction.category;
+
+  //when editing, legend and submit button will change text
+
+  legend.textContent = "Edit Transaction";
+  submitBtn.textContent = "Update Transaction";
+} //one form for both pages
