@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
+
+    <script type="module">
+      import { initTransactions } from "./scripts/state.js";
+      import { showBudgetStats } from "./scripts/ui.js";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        initTransactions();
+        showBudgetStats();
+      });
+    </script>
   </head>
   <body>
     <header><h1>Budget Summary</h1></header>
@@ -26,7 +36,10 @@
         <div class="card">
           <p>Monthly Budget Cap: <span id="budget-cap">$0.00</span></p>
           <p>Spent This Month: <span id="spent-this-month">$0.00</span></p>
-          <p>Amount Remaining: <span id="amount-remaining">$0.00</span></p>
+          <p>
+            Amount Remaining:
+            <span id="amount-remaining" aria-live="assertive">$0.00</span>
+          </p>
         </div>
       </section>
       <section id="bgt-progress-bar">
@@ -36,6 +49,10 @@
           <p>67% Spent</p>
           <!-- CSS positions the fill width based on JS calculation -->
         </div>
+        <div id="no-budget-message" hidden></div>
+        <p id="budget-warning" role="alert" style="display: none; color: red">
+          🚨You're over 80% of your budget! 🚨
+        </p>
 
         <a href="settings.html">Edit Budget Cap</a>
       </section>

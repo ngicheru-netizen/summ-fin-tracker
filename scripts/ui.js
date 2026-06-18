@@ -636,3 +636,45 @@ export function setupSettingsForm() {
     setBudgetCap(amount);
   });
 }
+
+export function showBudgetStats() {
+  const cap = getBudgetCap();
+  const capSpan = document.getElementById("budget-cap");
+  const spent = getTotalSpentThisMonth();
+  const spentSpan = document.getElementById("spent-this-month");
+  const remaining = cap - spent;
+  const remainingSpan = document.getElementById("amount-remaining");
+  const overBudget = isOverBudget();
+  const progressBar = document.querySelector(".progress-bar-container");
+  const warning = document.getElementById("budget-warning");
+  if (cap === 0) {
+    document.getElementById("no-budget-message").style.display = "block";
+
+    return;
+  } else if (cap > 0) {
+    const progressBarFill = document.querySelector(".progress-bar-fill");
+    if (!capSpan || !spentSpan || !remainingSpan || !progressBarFill) return;
+
+    capSpan.textContent = `$${cap.toFixed(2)}`;
+    spentSpan.textContent = `$${spent.toFixed(2)}`;
+    remainingSpan.textContent = `$${remaining.toFixed(2)}`;
+
+    const pcspent = getPercentageSpent();
+    const displayPercent = Math.min(pcspent, 100);
+
+    // null check for sanity
+
+    progressBarFill.style.width = `${displayPercent}%`;
+
+    const caption = document.querySelector("#bgt-progress-bar p");
+    caption.textContent = `${Math.round(displayPercent)}% Spent`;
+
+    if (overBudget) {
+      progressBarFill.classList.add("over-budget");
+      warning.style.display = "block";
+    } else {
+      progressBarFill.classList.remove("over-budget");
+      warning.style.display = "none";
+    }
+  }
+}
