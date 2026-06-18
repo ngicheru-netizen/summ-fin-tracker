@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
     <script type="module">
-      import { showDashboardStats } from "./scripts/ui.js";
-      import { initTransactions } from "./scripts/state.js";
+      import { showDashboardStats, showBudgetStats } from "./scripts/ui.js";
+      import { initTransactions, getBudgetCap } from "./scripts/state.js";
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
         showDashboardStats();
+        showBudgetStats();
+        getBudgetCap();
       });
     </script>
   </head>

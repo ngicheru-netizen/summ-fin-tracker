@@ -8,10 +8,27 @@
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
     <script type="module">
-      import { setupImportBtn, setupSettingsForm } from "./scripts/ui.js";
+      import {
+        setupImportBtn,
+        setupBudgetSettings,
+        setupCurrencySettings,
+      } from "./scripts/ui.js";
+      import {
+        getBaseCurrency,
+        setBaseCurrency,
+        getConversionRates,
+        setConversionRates,
+        convertCurrencyRates,
+      } from "./scripts/state.js";
       window.addEventListener("DOMContentLoaded", () => {
         setupImportBtn();
-        setupSettingsForm();
+        setupBudgetSettings();
+        getBaseCurrency();
+        setBaseCurrency();
+        getConversionRates();
+        setConversionRates();
+        convertCurrencyRates();
+        setupCurrencySettings();
       });
     </script>
   </head>
@@ -35,26 +52,11 @@
         <form id="set-currency">
           <fieldset>
             <legend>Select your currency</legend>
-            <input
-              type="radio"
-              id="usd"
-              name="base-currency"
-              value="United States Dollar ($)"
-            />
+            <input type="radio" id="usd" name="base-currency" value="USD" />
             <label for="usd">United States Dollar ($)</label><br />
-            <input
-              type="radio"
-              id="kes"
-              name="base-currency"
-              value="Kenyan Shilling (KES)"
-            />
+            <input type="radio" id="kes" name="base-currency" value="KES" />
             <label for="kes">Kenyan Shilling (KES)</label><br />
-            <input
-              type="radio"
-              id="rwf"
-              name="base-currency"
-              value="Rwandan Francs"
-            />
+            <input type="radio" id="rwf" name="base-currency" value="RwF" />
             <label for="rwf">Rwandan Francs (RwF)</label><br />
             <br />
           </fieldset>

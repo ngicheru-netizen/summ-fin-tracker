@@ -144,3 +144,45 @@ export function isOverBudget() {
     return false;
   }
 }
+
+export function getBaseCurrency() {
+  const currency = localStorage.getItem("app:baseCurrency");
+  if (currency !== null) {
+    return currency;
+  } else return "USD";
+}
+
+export function setBaseCurrency(currency) {
+  localStorage.setItem("app:baseCurrency", currency);
+}
+
+export function getConversionRates() {
+  const defaults = {
+    USD: 1,
+    KES: 129.44,
+    RwF: 1473,
+  };
+  const savedCurrency = localStorage.getItem("app:ConversionRates");
+  if (savedCurrency === null) {
+    return defaults;
+  } else {
+    return JSON.parse(savedCurrency);
+    return alert("Base Currency Set!");
+  }
+}
+
+export function setConversionRates(rates) {
+  localStorage.setItem("app:ConversionRates", JSON.stringify(rates));
+  return alert("Rates updated!");
+}
+
+export function convertCurrencyRates(amount, fromCurrency, toCurrency) {
+  if (fromCurrency === toCurrency) {
+    return amount;
+  }
+  const rates = getConversionRates();
+  const amountUSD = amount / rates[fromCurrency];
+  const converted = amountUSD * rates[toCurrency];
+
+  return converted;
+}
