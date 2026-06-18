@@ -103,3 +103,44 @@ export function exportTransactions(transactionsArray) {
   const exportedJSON = JSON.stringify(exported);
   return exportedJSON;
 }
+
+export function getBudgetCap() {
+  const number = localStorage.getItem("app:budgetCap");
+
+  if (number !== null) {
+    return Number(number);
+  } else {
+    return 0;
+  }
+}
+
+export function setBudgetCap(amount) {
+  localStorage.setItem("app:budgetCap", amount);
+  console.log("Success");
+  return alert("Budget Cap Set!");
+}
+
+export function getPercentageSpent() {
+  const spent = getTotalSpentThisMonth();
+  const cap = getBudgetCap();
+
+  if (cap === 0) {
+    return null;
+  }
+  const percentage = (spent / cap) * 100;
+
+  return percentage;
+}
+
+export function isOverBudget() {
+  const pcspent = getPercentageSpent();
+
+  if (pcspent === null) {
+    return false; //no budget cap set
+  }
+  if (pcspent >= 80) {
+    return true;
+  } else {
+    return false;
+  }
+}

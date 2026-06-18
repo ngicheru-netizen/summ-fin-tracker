@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
     <script type="module">
-      import { setupImportBtn } from "./scripts/ui.js";
+      import { setupImportBtn, setupSettingsForm } from "./scripts/ui.js";
       window.addEventListener("DOMContentLoaded", () => {
         setupImportBtn();
+        setupSettingsForm();
       });
     </script>
   </head>
@@ -93,7 +94,7 @@
               <small>Set the cap in your selected base currency (above)</small>
             </p>
           </fieldset>
-          <button id="change-currency" class="btn btn-primary">
+          <button id="save-change-currency" class="btn btn-primary">
             Save Changes
           </button>
           <button id="cancel-change-currency" class="btn btn-secondary">

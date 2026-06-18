@@ -8,6 +8,10 @@ import {
   getTotalSpentThisMonth,
   importTransactions,
   exportTransactions,
+  getBudgetCap,
+  setBudgetCap,
+  getPercentageSpent,
+  isOverBudget,
 } from "./state.js";
 
 let currentDisplayedTransactions = [];
@@ -582,7 +586,7 @@ export function setupImportBtn() {
 
 export function setupExportBtn() {
   const exportBtn = document.getElementById("export-btn");
-  if (!exportBtn) return;
+  if (!exportBtn) return; //if button doesn't exist, exit!
   exportBtn.addEventListener("click", (event) => {
     //Bug - button works, but array in json file is empty
     // Cause - currentDisplayedTransactions starts as [] on load, so any export would show empty
@@ -615,5 +619,20 @@ export function setupExportBtn() {
       URL.revokeObjectURL(url); //free up URL
     }
     downloadFile(jsonString, "transactions.json");
+  });
+}
+
+export function setupSettingsForm() {
+  const saveChangesBtn = document.getElementById("save-change-currency");
+  if (!saveChangesBtn) return; //if button doesn't exist, exit!
+  saveChangesBtn.addEventListener("click", (event) => {
+    const amount = document.getElementById("budget-cap").value;
+    //check to see if amount is a number, if not exit
+    if (amount === "" || isNaN(amount)) {
+      alert("Insert valid number");
+      return;
+    }
+
+    setBudgetCap(amount);
   });
 }
