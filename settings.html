@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
+    <script type="module">
+      import { setupImportBtn } from "./scripts/ui.js";
+      window.addEventListener("DOMContentLoaded", () => {
+        setupImportBtn();
+      });
+    </script>
   </head>
   <body>
     <header>
@@ -96,7 +102,24 @@
           <!--With Confirmation-->
         </form>
       </section>
-
+      <section id="import-export">
+        <h2>Import/Export Transactions</h2>
+        <div class="card">
+          <!-- js -->
+        </div>
+        <!-- import file -->
+        <div>
+          <label for="import-file">Import JSON file</label>
+          <input
+            type="file"
+            id="import-file"
+            name="import-file"
+            accept=".json"
+            style="display: none"
+          />
+          <button id="import-btn" class="btn btn-primary">Import</button>
+        </div>
+      </section>
       <section id="manage-categories">
         <h2>Manage Categories</h2>
         <!--This section will allow users to add, edit and delete categories-->
@@ -104,28 +127,38 @@
         <ul class="category-list">
           <li>
             <span>Food</span>
-            <button class="edit-category-button">Edit</button>
-            <button class="delete-category-button">Delete</button>
+            <button class="btn btn-secondary edit-category-button">Edit</button>
+            <button class="btn btn-danger delete-category-button">
+              Delete
+            </button>
           </li>
           <li>
             <span>Books</span>
-            <button class="edit-category-button">Edit</button>
-            <button class="delete-category-button">Delete</button>
+            <button class="btn btn-secondary edit-category-button">Edit</button>
+            <button class="btn btn-danger delete-category-button">
+              Delete
+            </button>
           </li>
           <li>
             <span>Transport</span>
-            <button class="edit-category-button">Edit</button>
-            <button class="delete-category-button">Delete</button>
+            <button class="btn btn-secondary edit-category-button">Edit</button>
+            <button class="btn btn-danger delete-category-button">
+              Delete
+            </button>
           </li>
           <li>
             <span>Entertainment</span>
-            <button class="edit-category-button">Edit</button>
-            <button class="delete-category-button">Delete</button>
+            <button class="btn btn-secondary edit-category-button">Edit</button>
+            <button class="btn btn-danger delete-category-button">
+              Delete
+            </button>
           </li>
           <li>
             <span>Health</span>
-            <button class="edit-category-button">Edit</button>
-            <button class="delete-category-button">Delete</button>
+            <button class="btn btn-secondary edit-category-button">Edit</button>
+            <button class="btn btn-danger delete-category-button">
+              Delete
+            </button>
           </li>
         </ul>
         <button id="add-category-btn" class="btn btn-primary">

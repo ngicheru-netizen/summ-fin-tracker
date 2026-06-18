@@ -16,6 +16,7 @@
         setupSearch,
         setupTableActions,
         setupFormSubmission,
+        setupExportBtn,
       } from "./scripts/ui.js";
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
@@ -25,6 +26,7 @@
         setupSearch();
         setupTableActions();
         setupFormSubmission();
+        setupExportBtn();
       });
     </script>
   </head>
@@ -43,6 +45,14 @@
       </ol>
     </nav>
     <main>
+      <section>
+        <!-- export -->
+        <div>
+          <button id="export-btn" class="btn btn-primary">
+            Export Transactions
+          </button>
+        </div>
+      </section>
       <section>
         <!--Search Filter Form for transactions-->
         <form id="search-form">
@@ -109,6 +119,7 @@
             <input
               type="number"
               step="0.01"
+              min="0"
               id="trans-cost"
               name="trans-cost"
               required

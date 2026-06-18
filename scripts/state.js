@@ -82,3 +82,24 @@ export function getSpentbyCategory() {
   }
   return categoryTotals;
 }
+
+export function importTransactions(jsonString) {
+  try {
+    const importedData = JSON.parse(jsonString);
+
+    if (!importedData || !Array.isArray(importedData.transactions)) {
+      alert("Invalid!");
+      return;
+    }
+    saveTransactions(importedData.transactions);
+  } catch (error) {
+    alert("Invalid JSON");
+    console.log("Invalid JSON!");
+    return;
+  }
+}
+export function exportTransactions(transactionsArray) {
+  const exported = { transactions: transactionsArray };
+  const exportedJSON = JSON.stringify(exported);
+  return exportedJSON;
+}

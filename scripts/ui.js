@@ -6,7 +6,11 @@ import {
   getSpentbyCategory,
   getTotalSpent,
   getTotalSpentThisMonth,
+  importTransactions,
+  exportTransactions,
 } from "./state.js";
+
+let currentDisplayedTransactions = [];
 
 //show last 5 transactions on cards on home page
 export function renderRecentTransactions() {
@@ -33,6 +37,10 @@ export function renderRecentTransactions() {
 export function renderRecentTable(transactionArray) {
   //use passed array if exists, otherwise get from state.js
   const allTrans = transactionArray || getTransactions();
+
+  //keep the export list in sync with whatever is currently rendered
+  currentDisplayedTransactions = allTrans;
+
   //   console.log("All transactions:", allTrans);
   const tbody = document.querySelector("table tbody");
   //   console.log("tbody element:", tbody);
@@ -347,6 +355,7 @@ export function setupSortHeaders() {
           return -comparison;
         }
       });
+      currentDisplayedTransactions = sortedTransactions;
       const tbody = document.querySelector("table tbody");
       tbody.innerHTML = "";
       renderRecentTable(sortedTransactions);
@@ -395,6 +404,7 @@ export function setupSearch() {
         trans.id.toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
+    currentDisplayedTransactions = filtered;
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = "";
     renderRecentTable(filtered);
@@ -541,4 +551,69 @@ export function showDashboardStats() {
       "$" + thisMonth.toFixed(2);
     tbody.innerHTML += `<tr><td>${category}</td><td>$${amount.toFixed(2)}</td></tr>`;
   }
+}
+
+export function setupImportBtn() {
+  const importBtn = document.getElementById("import-btn");
+  const fileInput = document.getElementById("import-file");
+  if (!importBtn || !fileInput) return;
+
+  importBtn.addEventListener("click", (event) => {
+    //opens file explorer to choose file
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+    const read = new FileReader();
+    read.onload = (event) => {
+      const content = event.target.result;
+      console.log("File content", content);
+      console.log("File type:", typeof content);
+      importTransactions(content);
+    };
+    read.readAsText(file);
+    event.target.value = ""; //if you pick the same file, the event listener still works
+  });
+}
+
+export function setupExportBtn() {
+  const exportBtn = document.getElementById("export-btn");
+  if (!exportBtn) return;
+  exportBtn.addEventListener("click", (event) => {
+    //Bug - button works, but array in json file is empty
+    // Cause - currentDisplayedTransactions starts as [] on load, so any export would show empty
+    // Fix - load JSON file with whatever actually renders, search or otherwise
+    let file;
+    if (currentDisplayedTransactions.length) {
+      file = currentDisplayedTransactions;
+    } else {
+      file = getTransactions();
+    }
+
+    const jsonString = exportTransactions(file);
+
+    function downloadFile(content, filename) {
+      //Download JSON file after exported
+      const blob = new Blob([content], { type: "application/json" });
+
+      const url = URL.createObjectURL(blob);
+      //create temporary anchor element
+
+      //" an element must be part of the DOM (Document Object Model)
+      // to be clicked programmatically."
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      //trigger download
+      document.body.appendChild(a);
+      a.click();
+
+      URL.revokeObjectURL(url); //free up URL
+    }
+    downloadFile(jsonString, "transactions.json");
+  });
 }
