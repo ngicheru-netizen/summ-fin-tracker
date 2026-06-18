@@ -5,7 +5,9 @@ export function loadTransactions() {
   const getarray = localStorage.getItem("app:transactions");
   if (getarray) {
     const parsed = JSON.parse(getarray);
-    return parsed;
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
   } else {
     return []; //return array
   }
