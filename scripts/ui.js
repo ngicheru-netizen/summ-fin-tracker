@@ -569,6 +569,25 @@ export function showDashboardStats() {
   }
 }
 
+export function renderCategoryBreakdown() {
+  const byCategory = getSpentbyCategory();
+  const cap = getBudgetCap();
+  const tbody = document.querySelector("#category-breakdown-table tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+  for (const category of Object.keys(byCategory)) {
+    const amount = byCategory[category];
+    const pctOfBudget = cap > 0 ? ((amount / cap) * 100).toFixed(1) : "—";
+    tbody.innerHTML += `
+      <tr>
+        <td>${category}</td>
+        <td>$${amount.toFixed(2)}</td>
+        <td>${pctOfBudget}${cap > 0 ? "%" : ""}</td>
+      </tr>`;
+  }
+}
+
 export function setupImportBtn() {
   const importBtn = document.getElementById("import-btn");
   const fileInput = document.getElementById("import-file");
@@ -721,9 +740,12 @@ export function showBudgetStats() {
 
   if (cap === 0) {
     const msg = document.getElementById("no-budget-message");
-    if (msg) msg.style.display = "block";
-    return;
-
+    if (msg) {
+      msg.style.display = "block";
+      msg.textContent = "No budget cap set yet — set one in Settings.";
+    }
+    //still show what's been spent this month, even without a cap
+    if (spentSpan) spentSpan.textContent = `${shownSpent.toFixed(2)} ${base}`;
     return;
   } else if (cap > 0) {
     const progressBarFill = document.querySelector(".progress-bar-fill");
@@ -734,7 +756,6 @@ export function showBudgetStats() {
     remainingSpan.textContent = `${shownRemaining.toFixed(2)} ${base}`;
 
     const pcspent = getPercentageSpent();
-    23;
     const displayPercent = Math.min(pcspent, 100);
 
     // null check for sanity

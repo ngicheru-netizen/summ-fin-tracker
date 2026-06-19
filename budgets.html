@@ -10,11 +10,15 @@
 
     <script type="module">
       import { initTransactions } from "./scripts/state.js";
-      import { showBudgetStats } from "./scripts/ui.js";
+      import {
+        showBudgetStats,
+        renderCategoryBreakdown,
+      } from "./scripts/ui.js";
 
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
         showBudgetStats();
+        renderCategoryBreakdown();
       });
     </script>
   </head>
@@ -65,21 +69,6 @@
               <th>Category</th>
               <th>Amount Spent</th>
               <th>% of Total Budget</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- JS will populate this -->
-          </tbody>
-        </table>
-      </section>
-      <section id="monnthly-breakdown">
-        <h2>Spending by Month</h2>
-        <table id="monthly-breakdown-table">
-          <thead>
-            <tr>
-              <th>Month</th>
-              <th>Amount Spent</th>
-              <th>Trend Indicator</th>
             </tr>
           </thead>
           <tbody>
