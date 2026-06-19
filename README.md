@@ -3,9 +3,9 @@
 A responsive, accessible, vanilla **HTML/CSS/JavaScript** app for tracking student spending — transactions, budgets, regex-powered search, multi-currency support, and JSON import/export. No frameworks.
 
 **Theme:** Student Finance Tracker
-**Live site (GitHub Pages):** https://ngicheru-netizen.github.io/summ-fin-tracker/dashboard.html
+**Live site (GitHub Pages):** https://ngicheru-netizen.github.io/summ-fin-tracker/index.html
 **Repository:** https://github.com/ngicheru-netizen/summ-fin-tracker
-**Demo video:** (TBD)
+**Demo video:** https://youtu.be/QDfcW6g9FBs
 **Author:** Nadiv Gicheru — n.gicheru@alustudent.com
 
 ---
