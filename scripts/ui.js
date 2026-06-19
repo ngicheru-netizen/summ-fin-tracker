@@ -144,17 +144,21 @@ export function setupFormSubmission() {
       alert(
         "Description can't be empty, have spaces around text or have duplicate words. Try again!",
       );
+      return;
     }
     if (!isValidAmount(cost)) {
       alert("Please enter a valid amount i.e. 67 or 17.38. Try again!");
+      return;
     }
 
     if (!isValidCategory(category)) {
       alert("Category MUST be letters only. Try again!");
+      return;
     }
 
     if (!isValidDate(timedate)) {
       alert("Please enter a valid date (YYYY-MM-DD). Try again!");
+      return;
     }
     //detect if it's an edit situation or an add Transaction situation.
     const cleanedSummary = summary.trim().replace(/\s+/g, " ");
@@ -213,15 +217,16 @@ export function setupFormSubmission() {
 
 //make card clickable - after clicking full transaction page loads.
 export function setupCardClickListener() {
-  console.log("listener called");
   const container = document.querySelector(".trans-cards");
+  if (!container) return;
 
   container.addEventListener("click", (event) => {
     const clickCard = event.target.closest(".card");
+    if (!clickCard) return; //clicked a gap, not a card
 
     const transId = clickCard.getAttribute("data-id");
-
     const trans = getTransactions().find((item) => item.id === transId);
+    if (!trans) return;
 
     showTransactionDetails(trans);
   });
@@ -283,7 +288,6 @@ export function showTransactionDetails(transaction) {
     if (
       window.confirm("Are you sure you'd like to continue with this action?")
     ) {
-      console.log("User confirmed");
       deleteTransaction(transaction.id);
 
       //if exists clear containers to avoid duplicates
@@ -304,7 +308,6 @@ export function showTransactionDetails(transaction) {
         detailsSummary.classList.remove("hideme");
       }, 500);
     } else {
-      console.log("User canceled");
     }
   });
 
@@ -333,11 +336,9 @@ export function showTransactionDetails(transaction) {
 
 export function setupSortHeaders() {
   const th = document.querySelectorAll("th[data-sort]");
-  console.log("headers found", th.length);
 
   for (const headers of th) {
     headers.addEventListener("click", (event) => {
-      console.log("Header clicked!");
       const sortType = event.target.getAttribute("data-sort");
       const table = document.querySelector("table");
 
@@ -359,7 +360,6 @@ export function setupSortHeaders() {
 
       //clear & show
       const allTrans = getTransactions();
-      console.log("All transactions", allTrans);
       const sortedTransactions = allTrans.sort((a, b) => {
         const comparison = String(a[sortType]).localeCompare(
           String(b[sortType]),
@@ -483,7 +483,6 @@ export function setupTableActions() {
       if (
         window.confirm("Are you sure you'd like to continue with this action?")
       ) {
-        console.log("User confirmed");
         deleteTransaction(transID);
 
         //if exists clear containers to avoid duplicates
@@ -524,9 +523,6 @@ export function showDashboardStats() {
   const thisMonth = getTotalSpentThisMonth();
   const total = getTotalSpent();
 
-  console.log("byCategory:", byCategory);
-  console.log("thisMonth:", thisMonth);
-  console.log("total:", total);
 
   //reflect the budget numbers onto the page
   const cap = getBudgetCap();
@@ -606,8 +602,6 @@ export function setupImportBtn() {
     const read = new FileReader();
     read.onload = (event) => {
       const content = event.target.result;
-      console.log("File content", content);
-      console.log("File type:", typeof content);
       importTransactions(content);
     };
     read.readAsText(file);

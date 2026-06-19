@@ -16,9 +16,11 @@ A responsive, accessible, vanilla **HTML/CSS/JavaScript** app for tracking stude
 - **Regex search** — live, case-insensitive-toggleable pattern search over description / category / id, with `<mark>` highlighting and a safe `try/catch` compiler (invalid patterns never crash the page).
 - **Sorting** — sort the history table by id, amount, category, or date (ascending/descending, keyboard-accessible headers).
 - **Form validation** — four regex rules including an **advanced back-reference** (duplicate-word detection).
-- **Dashboard / stats** — total spent, spend this month, spending by category.
-- **Budget cap** — set a monthly cap; remaining/overage is announced via an ARIA live region, with an over-budget warning.
-- **Multi-currency** — base currency (USD / KES / RwF) with **manual conversion rates** set in Settings. Amounts are stored in USD and converted for display.
+- **Dashboard / stats** — total spent, spend this month, spending by category, and total shown simultaneously in **USD / KES / RwF**.
+- **Last-7-days trend chart** — a CSS/JS bar chart of daily spending over the past week, with day labels and per-day totals.
+- **Budget page** — budget status card, an animated **progress bar** (with over-80% warning), and a **Spending-by-Category breakdown** table (amount + % of cap).
+- **Budget cap** — set a monthly cap; remaining/overage is announced via an ARIA live region (polite when under, assertive when over), with an over-budget warning.
+- **Multi-currency** — base currency (USD / KES / RwF) with **manual conversion rates** set in Settings. Amounts are stored in USD and converted for display; entering a transaction in another currency normalizes it to USD on save.
 - **Category management** — add / rename / delete spending categories (persisted).
 - **Import / Export** — JSON export of transactions, and import with structure validation.
 - **Persistence** — all data saved to `localStorage`.
@@ -90,6 +92,7 @@ Example patterns to try in the search box:
 
 | Key                                 | Action                                                         |
 | ----------------------------------- | -------------------------------------------------------------- |
+| `Tab` (first focus)                 | Reveals the **Skip to content** link; `Enter` jumps to `<main>`|
 | `Tab` / `Shift+Tab`                 | Move between links, inputs, buttons                            |
 | `Enter` / `Space`                   | Activate the focused button/link                               |
 | `Enter` on a sortable column header | Sort by that column (headers are focusable via `tabindex="0"`) |
@@ -99,13 +102,13 @@ Example patterns to try in the search box:
 ## Accessibility notes
 
 - Semantic landmarks: `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>` with proper headings.
+- **Skip-to-content link** on every page (visible on focus) jumps past the nav to `#main-content`.
+- **Visible focus styles** via `:focus-visible` on interactive elements.
 - All inputs have associated `<label>`s.
 - Search results and status messages use `role="status"` / `aria-live` so screen readers announce them.
-- The budget cap message uses an ARIA live region for remaining/overage updates.
+- The budget cap message uses an ARIA live region that switches **polite ↔ assertive** depending on whether spending is under or over the cap.
 - Color palette uses the ALU primary navy with adequate contrast against white surfaces.
 - Fully operable with the keyboard (see map above).
-
-<!-- TODO (M7 polish): add a skip-to-content link, visible :focus styles, and switch the budget aria-live between polite (under) and assertive (over). -->
 
 ---
 

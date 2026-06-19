@@ -1,4 +1,4 @@
-import { initTransactions, getTransactions } from "./state.js";
+import { initTransactions } from "./state.js";
 import {
   renderRecentTransactions,
   setupAddTransactionToggle,
@@ -11,23 +11,16 @@ function loadSeedData() {
   if (localStorage.getItem("app:transactions")) return Promise.resolve();
 
   return fetch("./seed.json")
-    .then((response) => {
-      console.log("fetch successful, response:", response);
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      // Save to localStorage
-      console.log("Data loaded from seed.json", data);
+      //save seed transactions (unwrap the { transactions: [...] } shape)
       localStorage.setItem(
         "app:transactions",
         JSON.stringify(data.transactions),
       );
     })
-
     .catch((error) => {
-      console.error("FETCH FAILED - Error loading seed.json:", error);
-      console.error("Error message:", error.message);
-      console.error("Error stack:", error.stack);
+      console.error("Error loading seed.json:", error);
     });
 }
 
@@ -40,8 +33,4 @@ window.addEventListener("DOMContentLoaded", () => {
     setupFormSubmission();
     setupCardClickListener();
   });
-  //call getTransactions function
-  const transactions = getTransactions(); //get the array
-
-  console.log(transactions); //test
 });

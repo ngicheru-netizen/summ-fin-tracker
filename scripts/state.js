@@ -155,7 +155,6 @@ export function importTransactions(jsonString) {
     saveTransactions(importedData.transactions);
   } catch (error) {
     alert("Invalid JSON");
-    console.log("Invalid JSON!");
     return;
   }
 }
@@ -177,7 +176,6 @@ export function getBudgetCap() {
 
 export function setBudgetCap(amount) {
   localStorage.setItem("app:budgetCap", amount);
-  console.log("Success");
 }
 
 export function getPercentageSpent() {
