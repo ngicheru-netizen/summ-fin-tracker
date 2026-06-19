@@ -100,7 +100,18 @@ export function setupAddTransactionToggle() {
 
   //when button clicked, show form
 
-  addToggle.addEventListener("click", (Event) => {
+  addToggle.addEventListener("click", (event) => {
+    //reset the shared form to "add mode" so old edit state doesn't linger
+    const form = document.getElementById("transactionform");
+    if (form) {
+      form.reset();
+      form.elements["trans-id"].value = ""; //empty id = add, not edit
+      const legend = form.querySelector("legend");
+      const submitBtn = form.querySelector("button[type='submit']");
+      if (legend) legend.textContent = "Add Transaction";
+      if (submitBtn) submitBtn.textContent = "Submit Transaction";
+    }
+
     detailsSummary.classList.remove("hideme");
     detailsSummary.classList.add("showme");
   });
