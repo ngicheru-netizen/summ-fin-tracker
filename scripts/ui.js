@@ -519,25 +519,6 @@ function populateFormforEdit(transaction) {
   submitBtn.textContent = "Update Transaction";
 } //one form for both pages
 
-// export function showCategoryTotals() {
-//   //total expenditure per category
-//   const categories = [
-//     "Food",
-//     "Utilities",
-//     "Books",
-//     "Transport",
-//     "Entertainment",
-//     "Health",
-//   ];
-//   const container = document.querySelector(".category-totals");
-//   if (!container) return;
-// }
-// container.innerHTML = "";
-// for (const cat of categories) {
-//   const total = getSpentByCategory(cat);
-//   container.innerHTML += `<p>${cat}: ${total}</p>`;
-// }
-
 export function showDashboardStats() {
   const byCategory = getSpentbyCategory();
   const thisMonth = getTotalSpentThisMonth();
@@ -575,6 +556,15 @@ export function showDashboardStats() {
       "$" + thisMonth.toFixed(2);
     document.getElementById("total-usd").textContent =
       "$" + thisMonth.toFixed(2);
+
+    const totalKes = convertCurrencyRates(total, "USD", "KES");
+    const totalRwf = convertCurrencyRates(total, "USD", "RwF");
+
+    document.getElementById("total-kes").textContent =
+      ` ${totalKes.toFixed(2)}`;
+    document.getElementById("total-rwf").textContent =
+      ` ${totalRwf.toFixed(2)}`;
+
     tbody.innerHTML += `<tr><td>${category}</td><td>$${amount.toFixed(2)}</td></tr>`;
   }
 }
