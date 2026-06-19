@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tests</title>
+    <link rel="stylesheet" href="styles/base.css" />
+    <style>
+      .pass {
+        color: green;
+      }
+      .fail {
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>Validator & Search Tests</h1></header>
+    <main>
+      <ul id="results"></ul>
+    </main>
+
+    <script type="module">
+      import {
+        isValidDescription,
+        isValidAmount,
+        isValidDate,
+        isValidCategory,
+      } from "./scripts/validators.js";
+      import { compileRegex, highlight } from "./scripts/search.js";
+
+      const results = document.getElementById("results");
+
+      // the assert helper: compare actual vs expected, print a line
+      function assert(name, actual, expected) {
+        const passed = actual === expected;
+        const li = document.createElement("li");
+        li.className = passed ? "pass" : "fail";
+        li.textContent = `${passed ? "✅ PASS" : "❌ FAIL"} — ${name} (got ${actual}, expected ${expected})`;
+        results.appendChild(li);
+      }
+
+      // isValidAmount
+      assert("amount 12 valid", isValidAmount("12"), true);
+      assert("amount 12.50 valid", isValidAmount("12.50"), true);
+      assert("amount 007 invalid (leading zero)", isValidAmount("007"), false);
+      assert(
+        "amount 12.555 invalid (3 decimals)",
+        isValidAmount("12.555"),
+        false,
+      );
+      assert("amount abc invalid", isValidAmount("abc"), false);
+
+      // isValidDescription
+
+      assert(
+        "description co11gate is invalid",
+        isValidCategory("co11gate"),
+        false,
+      );
+      assert(
+        "Description -helloworld is invalid",
+        isValidCategory("-helloworld"),
+        false,
+      );
+      assert("Description workerholic", isValidCategory("workerholic"), true);
+
+      //isValidDate
+
+      assert("Date 2099-13-43", isValidDate("2099-13-43"), false);
+      assert("Date 2009-12-23", isValidDate("2099-13-43"), false);
+      assert("Date 1967-67-jj", isValidDate("2099-13-43"), false);
+
+      //isValidCategory
+      assert("Category  wantam ", isValidCategory(" wantam "), false);
+      assert("Category @#$&(*&#)", isValidCategory("@#$&(*&#)"), false);
+      assert("Category Jordan", isValidCategory("Jordan"), true);
+    </script>
+  </body>
+</html>
