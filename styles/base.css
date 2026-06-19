@@ -88,7 +88,11 @@ a:hover {
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
 }
 
 th,
@@ -99,7 +103,8 @@ td {
 
 th {
   font-weight: bold;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-primary);
+  color: white;
 }
 
 footer {
@@ -107,8 +112,9 @@ footer {
   padding: 2rem;
 }
 
-legend {
+/* legend {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-}
+  margin-bottom: 0.2rem;
+  float: none;
+} */
