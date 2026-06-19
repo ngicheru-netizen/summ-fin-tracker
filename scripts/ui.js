@@ -16,6 +16,8 @@ import {
   setConversionRates,
   convertCurrencyRates,
   getBaseCurrency,
+  getCategories,
+  addCategory,
 } from "./state.js";
 
 let currentDisplayedTransactions = [];
@@ -375,7 +377,13 @@ export function setupSortHeaders() {
         } else {
           return -comparison;
         }
+        headers.addEventListener("keydown", (event) => {
+          if (event === "Enter" || event.key === " ") {
+            event.preventDefault();
+          }
+        });
       });
+
       currentDisplayedTransactions = sortedTransactions;
       const tbody = document.querySelector("table tbody");
       tbody.innerHTML = "";
@@ -468,7 +476,7 @@ export function setupSearch() {
 // }
 
 export function setupTableActions() {
-  //consolidate edit and delete functionalities on all pages
+  //consolidate edit and delete functionalities for transactions forms
   const table = document.querySelector("table");
   if (!table) return;
 
@@ -773,4 +781,91 @@ export function showBudgetStats() {
       warning.style.display = "none";
     }
   }
+}
+
+export function renderCategories() {
+  const cats = getCategories();
+
+  const list = document.querySelector(".category-list");
+
+  if (!list) {
+    return;
+  }
+  list.innerHTML = "";
+
+  for (const cat of cats) {
+    list.innerHTML += `
+    <li data-name="${cat}">
+           <span>${cat}</span>
+
+            <button type="button" class="btn btn-secondary edit-category-button">Edit</button>
+
+            <button type="button" class="btn btn-danger delete-category-button">Delete</button>
+          </li>
+          <br>
+    `;
+  }
+}
+
+export function setupCategoryActions() {
+  const list = document.querySelector(".category-list");
+  if (!list) return;
+
+  list.addEventListener("click", (event) => {
+    const deleteBtn = event.target.closest(".delete-category-button");
+    const editBtn = event.target.closest(".edit-category-button");
+
+    if (deleteBtn) {
+      const li = deleteBtn.closest("li");
+      const name = li.dataset.name;
+
+      deleteCategory(name);
+      renderCategories();
+      return;
+    }
+
+    if (editBtn) {
+      const li = editBtn.closest("li");
+      const name = li.dataset.name;
+
+      document.getElementById("cat-name").value = name; //form shows existing name when edit button is clicked
+      document.getElementById("cat-id").value = name; //picks which category we're editing
+      document.getElementById("category-form").hidden = false; // shows form
+      return;
+    }
+  });
+}
+
+export function setupAddCategoryToggle() {
+  const addBtn = document.getElementById("add-category-btn");
+  const formSection = document.getElementById("category-form");
+  const cancelBtn = document.getElementById("cat-cancel");
+
+  addBtn.addEventListener("click", (event) => {
+    formSection.hidden = false; //similar to showme
+  });
+
+  cancelBtn.addEventListener("click", (event) => {
+    formSection.hidden = true; // similar to hideme
+  });
+}
+
+export function setupCategoryForm() {
+  const saveBtn = document.getElementById("save-category");
+  const nameInput = document.getElementById("cat-name");
+  const formSection = document.getElementById("cat-form");
+
+  saveBtn.addEventListener("click", (event) => {
+    const name = nameInput.value.trim(); //get rid of empty space
+
+    if (!saveBtn === "") {
+      alert("Please input category name!");
+      return;
+    }
+
+    addCategory(name);
+    renderCategories();
+    nameInput.value = "";
+    formSection.hidden = true; //hide when form is submitted
+  });
 }

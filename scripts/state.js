@@ -1,11 +1,71 @@
-import { loadTransactions, saveTransactions } from "./storage.js";
+import {
+  loadCategories,
+  loadTransactions,
+  saveCategories,
+  saveTransactions,
+} from "./storage.js";
+import { renderCategories } from "./ui.js";
 
 let transactions = []; //global variable that will be used in the functions
+let categories = [];
 
+export function initCategories() {
+  //load from storage into categories array
+  categories = loadCategories();
+
+  if (categories.length === 0) {
+    categories = [
+      "Food",
+      "Utilities",
+      "Health",
+      "Entertainment",
+      "Transport",
+      "Books",
+    ];
+    saveCategories(categories);
+  }
+}
 export function initTransactions() {
   //initiate transactions from app start
 
   transactions = loadTransactions();
+}
+
+//categories functions!!//
+
+export function getCategories() {
+  return categories;
+}
+
+export function addCategory(name) {
+  if (categories.includes(name)) return;
+  categories.push(name);
+  saveCategories(categories);
+}
+
+export function deleteCategory(name) {
+  const kept = [];
+  for (let i = 0; i < categories.length; i++) {
+    const c = categories[i];
+    if (c !== name) {
+      //if it's not what i'm trying to delete, keep and move on.
+      kept.push(c);
+    }
+  }
+  categories = kept;
+  // Whatever i'm trying to delete, won't make it to the "final array"
+  saveCategories(categories);
+}
+
+export function updateCategoryName(oldName, newName) {
+  categories = categories.map((category) => {
+    if (category === oldName) {
+      return newName; // replace it
+    }
+
+    return category; //others remain unchanged
+  });
+  saveCategories(categories);
 }
 
 export function addTransaction(newTx) {
@@ -147,9 +207,9 @@ export function isOverBudget() {
 
 export function getBaseCurrency() {
   const currency = localStorage.getItem("app:baseCurrency");
-  if (currency !== "undefined" || !currency) {
-    return currency;
-  } else return "USD";
+  if (!currency || currency !== "undefined") {
+    return "USD";
+  } else return currency;
 }
 
 export function setBaseCurrency(currency) {
@@ -163,7 +223,7 @@ export function getConversionRates() {
     RwF: 1473,
   };
   const savedCurrency = localStorage.getItem("app:ConversionRates");
-  if (!savedCurrency === "undefined" || !savedCurrency) {
+  if (!savedCurrency || !savedCurrency === "undefined") {
     return defaults;
   }
   try {
