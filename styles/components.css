@@ -171,8 +171,46 @@ fieldset legend {
   color: var(--color-text);
 }
 
+/* Budget progress bar */
+#bgt-progress-bar {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar-container {
+  position: relative;
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+  height: 28px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-bar-fill {
+  background: var(--color-primary);
+  height: 100%;
+  border-radius: 8px 0 0 8px;
+  transition: width 0.4s ease;
+}
+
+/* the "30% Spent" caption, centred over the bar */
+.progress-bar-container p {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  line-height: 28px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
 .progress-bar-fill.over-budget {
-  background-color: red;
+  background-color: var(--color-accent);
 }
 
 .category-list li {
