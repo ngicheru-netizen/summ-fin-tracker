@@ -247,3 +247,23 @@ export function convertCurrencyRates(amount, fromCurrency, toCurrency) {
 
   return converted;
 }
+
+//trends
+
+export function getLast7DaysSpending() {
+  const days = [];
+  const today = new Date();
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+
+    let total = 0;
+    for (const t of transactions) {
+      if (t.date === key) total += t.amount;
+    }
+    days.push({ date: key, total });
+  }
+  return days;
+}

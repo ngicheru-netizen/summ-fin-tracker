@@ -8,10 +8,15 @@
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/responsive.css" />
     <script type="module">
-      import { showDashboardStats, showBudgetStats } from "./scripts/ui.js";
+      import {
+        showDashboardStats,
+        showBudgetStats,
+        renderTrendChart,
+      } from "./scripts/ui.js";
       import { initTransactions, getBudgetCap } from "./scripts/state.js";
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
+        renderTrendChart();
         showDashboardStats();
         showBudgetStats();
         getBudgetCap();
@@ -67,26 +72,11 @@
         </div>
       </section>
 
-      <section id="spending-trend">
-        <h2>Spending Trends by Category</h2>
-        <!--Shows spending trend of the last 12 months (tbd) on a pie chart-->
-        <!--Will also hold container for SVG-->
-
-        <svg id="cat-pie-chart">
-          <!--Shows spending based on category-->
-          <!--Will use JS for this part-->
-        </svg>
+      <section id="spending-trend" aria-labelledby="trend-heading">
+        <h2 id="trend-heading">Spending - Last 7 days</h2>
+        <div class="trend-chart"></div>
       </section>
-      <section id="spending-trend-monthly">
-        <h2>Spending Trends (Last 12 Months)</h2>
-        <!--Shows spending trend of the last 12 months (tbd) on a pie chart-->
-        <!--Will also hold container for SVG-->
 
-        <svg id="monthly-pie-chart">
-          <!--Shows spending based on category-->
-          <!--Will use JS for this part-->
-        </svg>
-      </section>
       <section id="currency-display">
         <!--This will hold the second chart
          on how much was spent in total, and in USD, KES and RwF-->

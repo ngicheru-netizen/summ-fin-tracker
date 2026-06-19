@@ -2,147 +2,147 @@
   "transactions": [
     {
       "id": "txn_001",
-      "description": "Coffee",
-      "amount": 5.5,
+      "description": "Morning coffee",
+      "amount": 4.5,
       "category": "Food",
-      "date": "2025-09-25",
-      "createdAt": "2025-09-25T08:00:00Z",
-      "updatedAt": "2025-09-25T08:00:00Z"
+      "date": "2026-06-13",
+      "createdAt": "2026-06-13T08:05:00Z",
+      "updatedAt": "2026-06-13T08:05:00Z"
     },
     {
       "id": "txn_002",
-      "description": "Gas",
-      "amount": 45.0,
+      "description": "Bus fare to campus",
+      "amount": 2.75,
       "category": "Transport",
-      "date": "2025-09-24",
-      "createdAt": "2025-09-24T10:00:00Z",
-      "updatedAt": "2025-09-24T10:00:00Z"
+      "date": "2026-06-13",
+      "createdAt": "2026-06-13T08:40:00Z",
+      "updatedAt": "2026-06-13T08:40:00Z"
     },
     {
       "id": "txn_003",
-      "description": "Groceries",
-      "amount": 82.75,
-      "category": "Food",
-      "date": "2025-09-23",
-      "createdAt": "2025-09-23T14:30:00Z",
-      "updatedAt": "2025-09-23T14:30:00Z"
+      "description": "Statistics textbook",
+      "amount": 64.99,
+      "category": "Books",
+      "date": "2026-06-14",
+      "createdAt": "2026-06-14T11:20:00Z",
+      "updatedAt": "2026-06-14T11:20:00Z"
     },
     {
       "id": "txn_004",
-      "description": "Phone Data Bundle",
-      "amount": 12.0,
-      "category": "Utilities",
-      "date": "2025-09-22",
-      "createdAt": "2025-09-22T09:15:00Z",
-      "updatedAt": "2025-09-22T09:15:00Z"
+      "description": "Lunch with study group",
+      "amount": 13.4,
+      "category": "Food",
+      "date": "2026-06-14",
+      "createdAt": "2026-06-14T13:10:00Z",
+      "updatedAt": "2026-06-14T13:10:00Z"
     },
     {
       "id": "txn_005",
-      "description": "Uber Ride",
-      "amount": 18.4,
-      "category": "Transport",
-      "date": "2025-09-21",
-      "createdAt": "2025-09-21T19:45:00Z",
-      "updatedAt": "2025-09-21T19:45:00Z"
+      "description": "Cinema ticket",
+      "amount": 11.0,
+      "category": "Entertainment",
+      "date": "2026-06-15",
+      "createdAt": "2026-06-15T19:30:00Z",
+      "updatedAt": "2026-06-15T19:30:00Z"
     },
     {
       "id": "txn_006",
-      "description": "Movie Ticket",
-      "amount": 9.99,
-      "category": "Entertainment",
-      "date": "2025-09-20",
-      "createdAt": "2025-09-20T16:20:00Z",
-      "updatedAt": "2025-09-20T16:20:00Z"
+      "description": "Groceries",
+      "amount": 47.8,
+      "category": "Food",
+      "date": "2026-06-15",
+      "createdAt": "2026-06-15T16:45:00Z",
+      "updatedAt": "2026-06-15T16:45:00Z"
     },
     {
       "id": "txn_007",
-      "description": "Lunch",
-      "amount": 14.25,
-      "category": "Food",
-      "date": "2025-09-19",
-      "createdAt": "2025-09-19T12:30:00Z",
-      "updatedAt": "2025-09-19T12:30:00Z"
+      "description": "Pharmacy refill",
+      "amount": 18.25,
+      "category": "Health",
+      "date": "2026-06-16",
+      "createdAt": "2026-06-16T10:00:00Z",
+      "updatedAt": "2026-06-16T10:00:00Z"
     },
     {
       "id": "txn_008",
-      "description": "Electricity Bill",
-      "amount": 60.0,
-      "category": "Utilities",
-      "date": "2025-09-18",
-      "createdAt": "2025-09-18T11:00:00Z",
-      "updatedAt": "2025-09-18T11:00:00Z"
+      "description": "Taxi home after late lab",
+      "amount": 9.6,
+      "category": "Transport",
+      "date": "2026-06-16",
+      "createdAt": "2026-06-16T22:15:00Z",
+      "updatedAt": "2026-06-16T22:15:00Z"
     },
     {
       "id": "txn_009",
-      "description": "Gym Membership",
-      "amount": 35.0,
-      "category": "Health",
-      "date": "2025-09-17",
-      "createdAt": "2025-09-17T07:45:00Z",
-      "updatedAt": "2025-09-17T07:45:00Z"
+      "description": "Notebook and pens",
+      "amount": 7.35,
+      "category": "Books",
+      "date": "2026-06-17",
+      "createdAt": "2026-06-17T09:25:00Z",
+      "updatedAt": "2026-06-17T09:25:00Z"
     },
     {
       "id": "txn_010",
-      "description": "Bus Fare",
-      "amount": 3.5,
-      "category": "Transport",
-      "date": "2025-09-16",
-      "createdAt": "2025-09-16T08:10:00Z",
-      "updatedAt": "2025-09-16T08:10:00Z"
+      "description": "Dinner takeout",
+      "amount": 22.9,
+      "category": "Food",
+      "date": "2026-06-17",
+      "createdAt": "2026-06-17T20:05:00Z",
+      "updatedAt": "2026-06-17T20:05:00Z"
     },
     {
       "id": "txn_011",
-      "description": "Concert Ticket",
-      "amount": 75.0,
-      "category": "Entertainment",
-      "date": "2025-09-15",
-      "createdAt": "2025-09-15T20:00:00Z",
-      "updatedAt": "2025-09-15T20:00:00Z"
+      "description": "Gym day pass",
+      "amount": 6.0,
+      "category": "Health",
+      "date": "2026-06-17",
+      "createdAt": "2026-06-17T07:00:00Z",
+      "updatedAt": "2026-06-17T07:00:00Z"
     },
     {
       "id": "txn_012",
-      "description": "Dinner",
-      "amount": 28.9,
-      "category": "Food",
-      "date": "2025-09-14",
-      "createdAt": "2025-09-14T19:30:00Z",
-      "updatedAt": "2025-09-14T19:30:00Z"
+      "description": "Concert ticket",
+      "amount": 35.0,
+      "category": "Entertainment",
+      "date": "2026-06-18",
+      "createdAt": "2026-06-18T18:00:00Z",
+      "updatedAt": "2026-06-18T18:00:00Z"
     },
     {
       "id": "txn_013",
-      "description": "Internet Bill",
-      "amount": 40.0,
-      "category": "Utilities",
-      "date": "2025-09-13",
-      "createdAt": "2025-09-13T09:00:00Z",
-      "updatedAt": "2025-09-13T09:00:00Z"
+      "description": "Train pass top-up",
+      "amount": 15.5,
+      "category": "Transport",
+      "date": "2026-06-18",
+      "createdAt": "2026-06-18T08:30:00Z",
+      "updatedAt": "2026-06-18T08:30:00Z"
     },
     {
       "id": "txn_014",
-      "description": "Pharmacy",
-      "amount": 22.15,
-      "category": "Health",
-      "date": "2025-09-12",
-      "createdAt": "2025-09-12T15:20:00Z",
-      "updatedAt": "2025-09-12T15:20:00Z"
+      "description": "Smoothie",
+      "amount": 5.25,
+      "category": "Food",
+      "date": "2026-06-19",
+      "createdAt": "2026-06-19T09:50:00Z",
+      "updatedAt": "2026-06-19T09:50:00Z"
     },
     {
       "id": "txn_015",
-      "description": "Taxi Ride",
-      "amount": 16.75,
-      "category": "Transport",
-      "date": "2025-09-11",
-      "createdAt": "2025-09-11T22:05:00Z",
-      "updatedAt": "2025-09-11T22:05:00Z"
+      "description": "Online course material",
+      "amount": 29.99,
+      "category": "Books",
+      "date": "2026-06-19",
+      "createdAt": "2026-06-19T14:15:00Z",
+      "updatedAt": "2026-06-19T14:15:00Z"
     },
     {
       "id": "txn_016",
-      "description": "Streaming Subscription",
-      "amount": 11.99,
+      "description": "Snacks for movie night",
+      "amount": 8.7,
       "category": "Entertainment",
-      "date": "2025-09-10",
-      "createdAt": "2025-09-10T10:30:00Z",
-      "updatedAt": "2025-09-10T10:30:00Z"
+      "date": "2026-06-19",
+      "createdAt": "2026-06-19T20:40:00Z",
+      "updatedAt": "2026-06-19T20:40:00Z"
     }
   ]
 }

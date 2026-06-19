@@ -18,6 +18,7 @@ import {
   getBaseCurrency,
   getCategories,
   addCategory,
+  getLast7DaysSpending,
 } from "./state.js";
 import { compileRegex, highlight } from "./search.js";
 import {
@@ -729,7 +730,9 @@ export function showBudgetStats() {
   const shownRemaining = convertCurrencyRates(remaining, "USD", base);
 
   if (cap === 0) {
-    document.getElementById("no-budget-message").style.display = "block";
+    const msg = document.getElementById("no-budget-message");
+    if (msg) msg.style.display = "block";
+    return;
 
     return;
   } else if (cap > 0) {
@@ -851,4 +854,46 @@ export function setupCategoryForm() {
     nameInput.value = "";
     formSection.hidden = true; //hide when form is submitted
   });
+}
+
+//display trends
+
+export function renderTrendChart() {
+  const data = getLast7DaysSpending();
+  const container = document.querySelector(".trend-chart");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const max = Math.max(...data.map((d) => d.total)) || 1;
+
+  for (const day of data) {
+    const heightPct = (day.total / max) * 100;
+
+    const col = document.createElement("div");
+    col.className = "trend-col";
+
+    const total = document.createElement("span");
+    total.className = "trend-total";
+    total.textContent = `$${day.total.toFixed(2)}`;
+
+    //create bar
+
+    const bar = document.createElement("div");
+    bar.className = "trend-bar";
+    bar.style.height = `${heightPct}%`;
+    bar.title = `${day.date}: $${day.total.toFixed(2)}`;
+    bar.setAttribute(
+      "aria-label",
+      `$day.date: ${day.total.toFixed(2)} dollars`,
+    );
+
+    const label = document.createElement("span");
+    label.className = "trend-day";
+
+    col.appendChild(total);
+    col.appendChild(bar);
+    col.appendChild(label);
+    container.appendChild(col);
+  }
 }
