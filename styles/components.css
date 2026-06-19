@@ -19,13 +19,21 @@ ol {
 }
 /* Buttons */
 .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.65rem 1rem;
   border-radius: 8px;
 
   color: white;
   cursor: pointer;
 
   transition: 0.3s;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.btn btn-secondary-edit-category-button {
 }
 
 .btn:hover {
@@ -143,4 +151,55 @@ form {
   margin-bottom: 3rem;
   max-width: max-content;
   max-height: max-content;
+}
+
+fieldset {
+  background: var(--color-bg-primary);
+  border: 4px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.45rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  margin-bottom: 1.5rem;
+}
+
+fieldset legend {
+  font-size: 1.6 rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+  color: var(--color-text);
+}
+
+.progress-bar-fill.over-budget {
+  background-color: red;
+}
+
+.category-list li {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: left;
+  justify-content: space-between;
+  gap: 0.1rem;
+  width: 20 px;
+}
+
+.category-list li span {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+div.details-content {
+  width: 300px;
+}
+.skip-link {
+  position: absolute;
+  left: -999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
 }

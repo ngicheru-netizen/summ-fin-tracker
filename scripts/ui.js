@@ -19,6 +19,13 @@ import {
   getCategories,
   addCategory,
 } from "./state.js";
+import { compileRegex, highlight } from "./search.js";
+import {
+  isValidDescription,
+  isValidAmount,
+  isValidCategory,
+  isValidDate,
+} from "./validators.js";
 
 let currentDisplayedTransactions = [];
 
@@ -48,7 +55,7 @@ export function renderRecentTransactions() {
   }
 }
 //show transactions on table
-export function renderRecentTable(transactionArray) {
+export function renderRecentTable(transactionArray, searchRegex) {
   //use passed array if exists, otherwise get from state.js
   const allTrans = transactionArray || getTransactions();
 
@@ -66,10 +73,10 @@ export function renderRecentTable(transactionArray) {
   for (const eachTrans of allTrans) {
     const shown = convertCurrencyRates(eachTrans.amount, "USD", base);
     const row = `<tr data-id="${eachTrans.id}">
-       <td>${eachTrans.id}</td> 
-    <td>${eachTrans.description}</td>
+       <td>${highlight(eachTrans.id, searchRegex)}</td> 
+    <td>${highlight(eachTrans.description, searchRegex)}</td>
        <td>${shown.toFixed(2)} ${base}</td>
-    <td>${eachTrans.category}</td>
+    <td>${highlight(eachTrans.category, searchRegex)}</td>
        <td>${eachTrans.date}</td> 
     <td>${eachTrans.createdAt}</td>
        <td>${eachTrans.updatedAt}</td>
@@ -132,40 +139,24 @@ export function setupFormSubmission() {
 
     //regex validation:
 
-    if (summary.trim() === "") {
-      //if empty, show error
-      //error
-      alert("Summary is required!");
-      return;
+    if (!isValidDescription(summary)) {
+      alert(
+        "Description can't be empty, have spaces around text or have duplicate words. Try again!",
+      );
+    }
+    if (!isValidAmount(cost)) {
+      alert("Please enter a valid amount i.e. 67 or 17.38. Try again!");
     }
 
-    const cleanedSummary = summary.trim().replace(/\s+/g, " ");
-    let regCost = /^\d+(\.\d{2})?$/;
-    let regDate = /^\d{4}-\d{2}-\d{2}$/;
-
-    if (!regCost.test(cost)) {
-      alert("Invalid Amount!");
-      return;
+    if (!isValidCategory(category)) {
+      alert("Category MUST be letters only. Try again!");
     }
 
-    if (!regDate.test(timedate)) {
-      alert("Invalid Date");
-      return;
+    if (!isValidDate(timedate)) {
+      alert("Please enter a valid date (YYYY-MM-DD). Try again!");
     }
-    //bug - future dates are allowed to submit
-    //fix enforce invalid date rejection.
-
-    if (new Date(timedate) > new Date()) {
-      alert("Nice Try! Transaction date cannot be in the future!");
-      return;
-    }
-    if (category.trim() === "") {
-      alert("Category is required!");
-      return;
-    }
-
     //detect if it's an edit situation or an add Transaction situation.
-
+    const cleanedSummary = summary.trim().replace(/\s+/g, " ");
     const transId = form.elements["trans-id"].value;
     if (transId) {
       //edit
@@ -411,69 +402,55 @@ export function setupSortHeaders() {
   }
 }
 
-//filter through transactions using search box
+//filter through transactions using regex pattern
 export function setupSearch() {
   const searchInput = document.getElementById("trans-search");
+  const caseToggle = document.getElementById("search-case-insensitive");
+  const status = document.getElementById("search-status");
 
   searchInput.addEventListener("input", (event) => {
-    const searchTerm = event.target.value;
+    const pattern = searchInput.value;
     const allTrans = getTransactions();
-    //filter transactions
+    const tbody = document.querySelector("table tbody");
 
+    //filter transactions
+    //condition ? condition true : condition false
+    // flags: g for highlighting, i ignore case
+    const flags = caseToggle.checked ? "gi" : "g";
+
+    const re = compileRegex(pattern, flags);
+
+    if (pattern === "") {
+      currentDisplayedTransactions = allTrans;
+      if (tbody) tbody.innerHTML = "";
+      renderRecentTable(allTrans);
+      status.textContent = "";
+      return;
+    }
+
+    if (!re) {
+      status.textContent = "Invalid search pattern";
+      return;
+    }
+    // show records of text that matches pattern
     const filtered = allTrans.filter((trans) => {
       return (
-        //if search matches category ||(or) description || amount || transaction ID
-        //category isn't case sensitive
-        //ID isn't case sensitive
-        //description isn't case sensitive
-        //amount has to be exact match
-        trans.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trans.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trans.amount === parseFloat(searchTerm) ||
-        trans.id.toLowerCase().includes(searchTerm.toLowerCase())
+        trans.description.match(re) ||
+        trans.category.match(re) ||
+        trans.id.match(re)
       );
     });
+
     currentDisplayedTransactions = filtered;
-    const tbody = document.querySelector("table tbody");
-    tbody.innerHTML = "";
-    renderRecentTable(filtered);
+    if (tbody) tbody.innerHTML = "";
+    renderRecentTable(filtered, re);
+
+    status.textContent = `${filtered.length} match${filtered.length === 1 ? "" : "es"}`;
   });
 }
 
 //Refactored and now using setupTableActions(); instead
 // export function setupTableEditBtn() {
-//   const table = document.querySelector("table");
-//   if (!table) return;
-
-// table.addEventListener("click", (event) => {
-//   const editBtn = event.target.closest(".trans-edit-btn");
-//   if (!editBtn) return; // a click somewhere else in the table
-
-//   console.log("edit button clicked!");
-//   const row = editBtn.closest("tr");
-//   const allTrans = getTransactions();
-//   const transId = row.getAttribute("data-id");
-//   const transaction = allTrans.find((item) => item.id === transId);
-//   console.log("Transaction found:", transaction);
-
-//   showTransactionDetails(transaction);
-//   console.log("details functions called");
-// });
-// }
-//   const tr = document.querySelectorAll(".trans-edit-btn");
-
-//   for (const editbutton of tr) {
-//     editbutton.addEventListener("click", (event) => {
-//       console.log("edit button clicked clicked!");
-//       const row = event.target.closest("tr");
-//       const allTrans = getTransactions();
-//       const transId = row.getAttribute("data-id");
-//       const transaction = allTrans.find((item) => item.id === transId);
-
-//       showTransactionDetails(transaction);
-//     });
-//   }
-// }
 
 export function setupTableActions() {
   //consolidate edit and delete functionalities for transactions forms
@@ -742,6 +719,7 @@ export function showBudgetStats() {
   const overBudget = isOverBudget();
   const progressBar = document.querySelector(".progress-bar-container");
   const warning = document.getElementById("budget-warning");
+  const liveElement = document.getElementById("amount-remaining");
 
   //normalize that all amounts stored are in one currency
 
@@ -780,6 +758,11 @@ export function showBudgetStats() {
       progressBarFill.classList.remove("over-budget");
       warning.style.display = "none";
     }
+  }
+  if (isOverBudget()) {
+    liveElement.setAttribute("aria-live", "assertive");
+  } else {
+    liveElement.setAttribute("aria-live", "polite");
   }
 }
 
