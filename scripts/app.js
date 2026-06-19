@@ -18,7 +18,10 @@ function loadSeedData() {
     .then((data) => {
       // Save to localStorage
       console.log("Data loaded from seed.json", data);
-      localStorage.setItem("app:transactions", JSON.stringify(data));
+      localStorage.setItem(
+        "app:transactions",
+        JSON.stringify(data.transactions),
+      );
     })
 
     .catch((error) => {
