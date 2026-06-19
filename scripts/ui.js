@@ -12,6 +12,10 @@ import {
   setBudgetCap,
   getPercentageSpent,
   isOverBudget,
+  setBaseCurrency,
+  setConversionRates,
+  convertCurrencyRates,
+  getBaseCurrency,
 } from "./state.js";
 
 let currentDisplayedTransactions = [];
@@ -21,13 +25,17 @@ export function renderRecentTransactions() {
   const allTrans = getTransactions();
   const lastFive = allTrans.slice(-5);
 
+  // show stored USD in the user's chosen currency
+  const base = getBaseCurrency();
+
   const container = document.querySelector(".trans-cards");
   if (!container) return;
   for (const eachTrans of lastFive) {
+    const shown = convertCurrencyRates(eachTrans.amount, "USD", base);
     container.innerHTML += `<article class="card" data-id="${eachTrans.id}">
       <h3>${eachTrans.description}</h3>
   <dl>
-    <dd>${eachTrans.amount}</dd>
+    <dd>${shown.toFixed(2)} ${base}</dd>
     <dd>${eachTrans.date}</dd>
     <dd>${eachTrans.category}</dd>
 
@@ -51,11 +59,14 @@ export function renderRecentTable(transactionArray) {
 
   if (!tbody) return; //leave if table doesn't exist
 
+  //normalize that all amounts stored are in one currency
+  const base = getBaseCurrency();
   for (const eachTrans of allTrans) {
+    const shown = convertCurrencyRates(eachTrans.amount, "USD", base);
     const row = `<tr data-id="${eachTrans.id}">
        <td>${eachTrans.id}</td> 
     <td>${eachTrans.description}</td>
-       <td>${eachTrans.amount}</td> 
+       <td>${shown.toFixed(2)} ${base}</td>
     <td>${eachTrans.category}</td>
        <td>${eachTrans.date}</td> 
     <td>${eachTrans.createdAt}</td>
@@ -115,6 +126,7 @@ export function setupFormSubmission() {
     const location = form.elements["trans-location-city"].value;
     const timedate = form.elements["trans-date"].value;
     const category = form.elements["trans-category"].value;
+    const enteredCurrency = form.elements["trans-currency"].value;
 
     //regex validation:
 
@@ -158,7 +170,7 @@ export function setupFormSubmission() {
 
       const updatedData = {
         description: cleanedSummary,
-        amount: parseFloat(cost),
+        amount: convertCurrencyRates(parseFloat(cost), enteredCurrency, "USD"),
         location: location,
         category: category,
         date: timedate,
@@ -169,7 +181,7 @@ export function setupFormSubmission() {
       const newTransaction = {
         id: "txn_" + Date.now(),
         description: cleanedSummary,
-        amount: parseFloat(cost),
+        amount: convertCurrencyRates(parseFloat(cost), enteredCurrency, "USD"),
         location: location,
         category: category,
         date: timedate,
@@ -225,6 +237,11 @@ export function showTransactionDetails(transaction) {
   const details = document.getElementById("trans-details");
   const contentDiv = details.querySelector(".details-content");
 
+  //normalize that all amounts stored are in one currency
+
+  const base = getBaseCurrency();
+  const shown = convertCurrencyRates(transaction.amount, "USD", base);
+
   //for html
   const detailsHtml = `
     <h3>${transaction.description}</h3>
@@ -232,7 +249,7 @@ export function showTransactionDetails(transaction) {
     <dt>Transaction ID</dt>
     <dd>${transaction.id}</dd>
       <dt>Amount</dt>
-      <dd>${transaction.amount}</dd>
+      <dd>${shown.toFixed(2)} ${base}</dd>
       <dt>Category</dt>
       <dd>${transaction.category}</dd>
       <dt>Date</dt>
@@ -505,6 +522,7 @@ function populateFormforEdit(transaction) {
   form.elements["trans-id"].value = transaction.id;
   form.elements["trans-summary"].value = transaction.description;
   form.elements["trans-cost"].value = transaction.amount;
+  form.elements["trans-currency"].value = "USD"; //avoids double convert
   form.elements["trans-location-city"].value = transaction.location;
   form.elements["trans-date"].value = transaction.date;
   form.elements["trans-category"].value = transaction.category;
@@ -542,6 +560,24 @@ export function showDashboardStats() {
   console.log("byCategory:", byCategory);
   console.log("thisMonth:", thisMonth);
   console.log("total:", total);
+
+  //reflect the budget numbers onto the page
+  const cap = getBudgetCap();
+  const remaining = cap - thisMonth;
+
+  //normalize that all amounts stored are in one currency
+
+  const base = getBaseCurrency();
+  const shownCap = convertCurrencyRates(cap, "USD", base);
+  const shownSpent = convertCurrencyRates(thisMonth, "USD", base);
+  const shownRemaining = convertCurrencyRates(remaining, "USD", base);
+
+  document.getElementById("budget-cap").textContent =
+    `${shownCap.toFixed(2)} ${base}`;
+  document.getElementById("spent-this-month").textContent =
+    `${shownSpent.toFixed(2)} ${base}`;
+  document.getElementById("amount-remaining").textContent =
+    `${shownRemaining.toFixed(2)} ${base}`;
 
   const tbody = document.querySelector("table tbody");
   if (!tbody) return;
@@ -622,20 +658,71 @@ export function setupExportBtn() {
   });
 }
 
-export function setupSettingsForm() {
+export function setupBudgetSettings() {
+  //Budget Cap
   const saveChangesBtn = document.getElementById("save-change-currency");
   if (!saveChangesBtn) return; //if button doesn't exist, exit!
   saveChangesBtn.addEventListener("click", (event) => {
+    event.preventDefault();
     const amount = document.getElementById("budget-cap").value;
     //check to see if amount is a number, if not exit
-    if (amount === "" || isNaN(amount)) {
+    if (amount === "") {
+      return;
+    }
+    if (isNaN(amount || Number(amount) < 0)) {
       alert("Insert valid number");
       return;
     }
-
     setBudgetCap(amount);
+    return alert("Budget Cap Set!");
   });
 }
+//
+//
+//
+
+//Currency Settings
+export function setupCurrencySettings() {
+  const saveChangesBtn = document.getElementById("save-change-currency");
+  if (!saveChangesBtn) return;
+  saveChangesBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const radio = document.querySelector('input[name="base-currency"]:checked');
+    if (!radio) {
+      alert("Please pick a base currency");
+      return;
+    }
+    const kesValue = document.getElementById("rate-kes").value;
+    const rwfValue = document.getElementById("rate-rwf").value;
+
+    const kesRate = Number(kesValue);
+    const rwfRate = Number(rwfValue);
+
+    if (
+      //if values are null/empty, or not numbers, or unreasonably high: error alert
+      kesValue === "" ||
+      rwfValue === "" ||
+      isNaN(kesRate) ||
+      isNaN(rwfRate) ||
+      kesRate <= 0 ||
+      rwfRate <= 0 ||
+      kesRate > 100000 ||
+      rwfRate > 100000
+    ) {
+      alert("Please enter valid conversion rates.");
+      return;
+    }
+    setConversionRates({ USD: 1, KES: kesRate, RwF: rwfRate });
+    setBaseCurrency(radio.value);
+    return alert("Rates updated!");
+  });
+}
+
+//
+//
+//
+//
 
 export function showBudgetStats() {
   const cap = getBudgetCap();
@@ -647,6 +734,14 @@ export function showBudgetStats() {
   const overBudget = isOverBudget();
   const progressBar = document.querySelector(".progress-bar-container");
   const warning = document.getElementById("budget-warning");
+
+  //normalize that all amounts stored are in one currency
+
+  const base = getBaseCurrency();
+  const shownCap = convertCurrencyRates(cap, "USD", base);
+  const shownSpent = convertCurrencyRates(spent, "USD", base);
+  const shownRemaining = convertCurrencyRates(remaining, "USD", base);
+
   if (cap === 0) {
     document.getElementById("no-budget-message").style.display = "block";
 
@@ -655,11 +750,12 @@ export function showBudgetStats() {
     const progressBarFill = document.querySelector(".progress-bar-fill");
     if (!capSpan || !spentSpan || !remainingSpan || !progressBarFill) return;
 
-    capSpan.textContent = `$${cap.toFixed(2)}`;
-    spentSpan.textContent = `$${spent.toFixed(2)}`;
-    remainingSpan.textContent = `$${remaining.toFixed(2)}`;
+    capSpan.textContent = `${shownCap.toFixed(2)} ${base}`;
+    spentSpan.textContent = `${shownSpent.toFixed(2)} ${base}`;
+    remainingSpan.textContent = `${shownRemaining.toFixed(2)} ${base}`;
 
     const pcspent = getPercentageSpent();
+    23;
     const displayPercent = Math.min(pcspent, 100);
 
     // null check for sanity

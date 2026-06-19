@@ -10,6 +10,7 @@ export function initTransactions() {
 
 export function addTransaction(newTx) {
   //new transaction added to array and saved.
+  //Every amount is stored in USD - saves me the headache.
   //array with transaction is then printed/shown.
   transactions.push(newTx);
   saveTransactions(transactions);
@@ -117,7 +118,6 @@ export function getBudgetCap() {
 export function setBudgetCap(amount) {
   localStorage.setItem("app:budgetCap", amount);
   console.log("Success");
-  return alert("Budget Cap Set!");
 }
 
 export function getPercentageSpent() {
@@ -147,7 +147,7 @@ export function isOverBudget() {
 
 export function getBaseCurrency() {
   const currency = localStorage.getItem("app:baseCurrency");
-  if (currency !== null) {
+  if (currency !== "undefined" || !currency) {
     return currency;
   } else return "USD";
 }
@@ -163,17 +163,18 @@ export function getConversionRates() {
     RwF: 1473,
   };
   const savedCurrency = localStorage.getItem("app:ConversionRates");
-  if (savedCurrency === null) {
+  if (!savedCurrency === "undefined" || !savedCurrency) {
     return defaults;
-  } else {
+  }
+  try {
     return JSON.parse(savedCurrency);
-    return alert("Base Currency Set!");
+  } catch (error) {
+    return defaults;
   }
 }
 
 export function setConversionRates(rates) {
   localStorage.setItem("app:ConversionRates", JSON.stringify(rates));
-  return alert("Rates updated!");
 }
 
 export function convertCurrencyRates(amount, fromCurrency, toCurrency) {

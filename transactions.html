@@ -17,6 +17,7 @@
         setupTableActions,
         setupFormSubmission,
         setupExportBtn,
+        setupCurrencySettings,
       } from "./scripts/ui.js";
       window.addEventListener("DOMContentLoaded", () => {
         initTransactions();
@@ -27,6 +28,7 @@
         setupTableActions();
         setupFormSubmission();
         setupExportBtn();
+        setupCurrencySettings();
       });
     </script>
   </head>
@@ -124,6 +126,12 @@
               name="trans-cost"
               required
             />
+            <label for="trans-currency">Currency</label>
+            <select id="trans-currency" name="trans-currency">
+              <option value="USD">USD</option>
+              <option value="KES">KES</option>
+              <option value="RwF">RwF</option>
+            </select>
 
             <label for="trans-location-city">Location</label>
             <select
