@@ -534,7 +534,6 @@ export function showDashboardStats() {
   const thisMonth = getTotalSpentThisMonth();
   const total = getTotalSpent();
 
-
   //reflect the budget numbers onto the page
   const cap = getBudgetCap();
   const remaining = cap - thisMonth;
@@ -693,29 +692,36 @@ export function setupCurrencySettings() {
       alert("Please pick a base currency");
       return;
     }
+
+    //always save the chosen base currency (independent of the rates)
+    setBaseCurrency(radio.value);
+
+    //only update conversion rates if the user actually entered them
     const kesValue = document.getElementById("rate-kes").value;
     const rwfValue = document.getElementById("rate-rwf").value;
 
-    const kesRate = Number(kesValue);
-    const rwfRate = Number(rwfValue);
+    if (kesValue !== "" || rwfValue !== "") {
+      const kesRate = Number(kesValue);
+      const rwfRate = Number(rwfValue);
 
-    if (
-      //if values are null/empty, or not numbers, or unreasonably high: error alert
-      kesValue === "" ||
-      rwfValue === "" ||
-      isNaN(kesRate) ||
-      isNaN(rwfRate) ||
-      kesRate <= 0 ||
-      rwfRate <= 0 ||
-      kesRate > 100000 ||
-      rwfRate > 100000
-    ) {
-      alert("Please enter valid conversion rates.");
-      return;
+      if (
+        //both must be present, numeric, positive, and reasonable
+        kesValue === "" ||
+        rwfValue === "" ||
+        isNaN(kesRate) ||
+        isNaN(rwfRate) ||
+        kesRate <= 0 ||
+        rwfRate <= 0 ||
+        kesRate > 100000 ||
+        rwfRate > 100000
+      ) {
+        alert("Please enter valid conversion rates for both KES and RwF.");
+        return;
+      }
+      setConversionRates({ USD: 1, KES: kesRate, RwF: rwfRate });
     }
-    setConversionRates({ USD: 1, KES: kesRate, RwF: rwfRate });
-    setBaseCurrency(radio.value);
-    return alert("Rates updated!");
+
+    alert("Settings saved!");
   });
 }
 

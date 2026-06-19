@@ -205,9 +205,10 @@ export function isOverBudget() {
 
 export function getBaseCurrency() {
   const currency = localStorage.getItem("app:baseCurrency");
-  if (!currency || currency !== "undefined") {
-    return "USD";
-  } else return currency;
+  if (!currency || currency === "undefined") {
+    return "USD"; //nothing saved
+  }
+  return currency; //a real saved code like "USD" / "KES" / "RwF"
 }
 
 export function setBaseCurrency(currency) {
