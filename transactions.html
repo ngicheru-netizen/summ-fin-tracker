@@ -63,8 +63,10 @@
             id="trans-search"
             placeholder=" Search transactions"
           />
+          <input type="checkbox" id="search-case-insensitive" checked />
+          <label for="search-case-insensitive">Ignore Case</label>
         </form>
-
+        <p id="search-status" role="status" aria-live="polite"></p>
         <h2>Transaction History</h2>
         <table data-sort-column="table" data-sort-direction="asc">
           <thead>
