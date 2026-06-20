@@ -5,7 +5,7 @@ A responsive, accessible, vanilla **HTML/CSS/JavaScript** app for tracking stude
 **Theme:** Student Finance Tracker
 **Live site (GitHub Pages):** https://ngicheru-netizen.github.io/summ-fin-tracker/index.html
 **Repository:** https://github.com/ngicheru-netizen/summ-fin-tracker
-**Demo video:** https://youtu.be/QDfcW6g9FBs
+**Demo YouTube video:** https://youtu.be/N_5_M8vykM4
 **Author:** Nadiv Gicheru — n.gicheru@alustudent.com
 
 ---
@@ -90,14 +90,14 @@ Example patterns to try in the search box:
 
 ## Keyboard map
 
-| Key                                 | Action                                                         |
-| ----------------------------------- | -------------------------------------------------------------- |
-| `Tab` (first focus)                 | Reveals the **Skip to content** link; `Enter` jumps to `<main>`|
-| `Tab` / `Shift+Tab`                 | Move between links, inputs, buttons                            |
-| `Enter` / `Space`                   | Activate the focused button/link                               |
-| `Enter` on a sortable column header | Sort by that column (headers are focusable via `tabindex="0"`) |
-| `Tab` into search box, type         | Live-filter the table as you type                              |
-| `Space` on "Ignore case" checkbox   | Toggle case-insensitive search                                 |
+| Key                                 | Action                                                          |
+| ----------------------------------- | --------------------------------------------------------------- |
+| `Tab` (first focus)                 | Reveals the **Skip to content** link; `Enter` jumps to `<main>` |
+| `Tab` / `Shift+Tab`                 | Move between links, inputs, buttons                             |
+| `Enter` / `Space`                   | Activate the focused button/link                                |
+| `Enter` on a sortable column header | Sort by that column (headers are focusable via `tabindex="0"`)  |
+| `Tab` into search box, type         | Live-filter the table as you type                               |
+| `Space` on "Ignore case" checkbox   | Toggle case-insensitive search                                  |
 
 ## Accessibility notes
 
